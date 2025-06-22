@@ -18,8 +18,8 @@
   - 동일한 단축 경로 존재 시 덮어쓰기
 - `ISFP.KR/@{사용자 아이디}/{단축 경로}` 형태의 짧은 주소 지원
   - 사용자 단축주소 예제: [ISFP.KR/@isfp/links/isfp-kr](https://isfp.kr/@isfp/links/isfp-kr)
-- 단축 경로가 `links`로 시작하면 `ISFP.KR/@{사용자 아이디}/@{links를 제외한 단축 경로}` 형태로 생략 가능
-  - 사용자 단축주소 예제: [ISFP.KR/@isfp/@isfp-kr](https://isfp.kr/@isfp/@isfp-kr)
+- 단축 경로가 `links`로 시작하면 `ISFP.KR/@{사용자 아이디}/!{links를 제외한 단축 경로}` 형태로 생략 가능
+  - 사용자 단축주소 예제: [ISFP.KR/@isfp/!isfp-kr](https://isfp.kr/@isfp/!isfp-kr)
 
 ### [사용자 글 작성](https://github.com/OUS-KR/ISFP.KR/issues/new?template=03-user-article-writing-by-issue.yml)
 
