@@ -47,11 +47,11 @@
 ### 유튜브 단축주소
 
 - 유튜브 영상: `ISFP.KR/yt/{유튜브 영상 아이디}`
-  - 예제: [ISFP.KR/yt/1ZX1vEDTfY4](https://isfp.kr/yt/1ZX1vEDTfY4)
+  - 예제: [ISFP.KR/yt/1ZX1vEDTfY4](https://isfp.kr/yt/1ZX1vEDTfY4), [ISFP.KR/yt/yebNIHKAC4A](https://isfp.kr/yt/yebNIHKAC4A)
 - 유튜브 영상 + 시작 시간 옵션: `ISFP.KR/{유튜브 영상 아이디}/{시작 시간}`
-  - 예제: [ISFP.KR/yt/1ZX1vEDTfY4/1m6s](https://isfp.kr/yt/1ZX1vEDTfY4/1m6s)
+  - 예제: [ISFP.KR/yt/1ZX1vEDTfY4/1m6s](https://isfp.kr/yt/1ZX1vEDTfY4/1m6s), [ISFP.KR/yt/yebNIHKAC4A/56](https://isfp.kr/yt/yebNIHKAC4A/56)
 - 유튜브 영상 썸네일: `ISFP.KR/yt/img/{유튜브 영상 아이디}`
-  - 예제: [ISFP.KR/yt/img/1ZX1vEDTfY4](https://isfp.kr/yt/img/1ZX1vEDTfY4)
+  - 예제: [ISFP.KR/yt/img/1ZX1vEDTfY4](https://isfp.kr/yt/img/1ZX1vEDTfY4), [ISFP.KR/yt/img/yebNIHKAC4A](https://isfp.kr/yt/img/yebNIHKAC4A)
 
 ## 주의사항
 
