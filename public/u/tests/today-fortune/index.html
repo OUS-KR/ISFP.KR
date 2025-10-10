@@ -37,7 +37,7 @@
             </div>
             <div class="card info-card">
                 <div class="card-title"><span class="icon">📈</span> ISFP 지수</div>
-                <p id="mbtiIndexDisplay">ISFP 지수를 불러오는 중...</p>
+                <p id="intpIndexDisplay">ISFP 지수를 불러오는 중...</p>
             </div>
             <div class="card info-card">
                 <div class="card-title"><span class="icon">🔑</span> 행운의 키워드</div>
@@ -91,23 +91,23 @@
     // --- Enhanced Generative Data Parts ---
     const data = {
         advice: {
-            openings: ["오늘은", "오늘 당신의"],
-            subjects: ["당신의 ISFP 타입 특성이", "새로운 기회가"],
-            verbs: ["빛을 발하는 날입니다.", "당신을 기다립니다."],
-            connectors: ["따라서", "그러니"],
-            actions: ["자신감을 가지고 도전해 보세요.", "주변을 탐색해 보세요."]
+            openings: ["오늘은", "오늘 당신의", "지금은", "오늘은 특별히"],
+            subjects: ["내면의 예술적 감각이", "주변의 아름다움이", "개인의 가치와 신념이", "새로운 경험에 대한 갈망이", "타인에 대한 공감 능력이"],
+            verbs: ["빛을 발하는 날입니다.", "새로운 영감으로 이끌 것입니다.", "당신을 진정한 길로 안내합니다.", "예상치 못한 기회를 가져다줍니다.", "주변에 긍정적인 영향을 줄 것입니다."],
+            connectors: ["따라서", "그러니", "이 기회를 빌어", "망설이지 말고"],
+            actions: ["자신만의 방식으로 감정을 표현해 보세요.", "자연 속에서 영감을 찾아보세요.", "내면의 목소리에 귀 기울여 진정성을 추구하세요.", "새로운 경험에 과감히 도전해 보세요.", "주변 사람들에게 따뜻한 마음을 전해 보세요."]
         },
         task: {
-            types: ["탐구하기:", "정리하기:"],
-            actions: ["오늘의", "새로운"],
-            subjects: ["아이디어", "정보"],
-            verbs: ["에 대해 생각해 보세요.", "를 정리해 보세요."]
+            types: ["표현하기:", "탐색하기:", "실천하기:", "경험하기:"],
+            actions: ["평소 마음속에 담아두었던", "새롭게 시도하고 싶은", "흥미를 느꼈던", "자연과 교감할 수 있는"],
+            subjects: ["예술 작품", "새로운 취미", "개인적인 가치 실현 활동", "자발적인 여행 계획", "타인을 돕는 봉사 활동", "아름다운 풍경"],
+            verbs: ["을(를) 통해 자신을 표현해 보세요.", "의 핵심을 파악하고 직접 경험해 보세요.", "을(를) 다른 사람과 공유해 보세요.", "과/와 관련된 새로운 아이디어를 3가지 이상 기록해 보세요.", "의 아름다움을 오롯이 느껴보세요."]
         },
-        mbtiIndex: { // Renamed from intpIndex to mbtiIndex for generality
-            reasons: ["당신의 ISFP 타입 특성이 잘 발휘되어", "긍정적인 에너지가 넘쳐"],
-            results: ["하루를 성공적으로 보낼 수 있습니다.", "새로운 영감을 얻을 수 있습니다."]
+        isfpIndex: {
+            reasons: ["내면의 예술적 감각이 충만하여", "주변의 아름다움을 깊이 있게 느끼며", "개인의 가치와 신념에 따라 행동하여", "새로운 경험을 통해 영감을 얻어", "타인에 대한 공감 능력이 발휘되어"],
+            results: ["창의적인 결과물을 만들어낼 가능성이 높습니다.", "삶의 진정한 의미를 발견할 수 있습니다.", "주변 사람들에게 긍정적인 영향을 줍니다.", "새로운 도전을 성공적으로 이끌 수 있습니다.", "내면의 평화와 만족감을 느낄 수 있습니다."]
         },
-        keywords: ["MBTI", "성장", "도전", "영감", "탐색"]
+        keywords: ["예술가", "모험가", "조용한", "친근한", "민감한", "자유로운", "진정성", "창의적인", "유연한", "자발적인", "관찰력", "공감", "평화로운", "배려심", "현재 지향적인", "화가", "음악가", "디자이너", "작가", "자연주의자", "치료사", "수공예가", "동물 조련사", "여행가"]
     };
 
     // --- Generator Functions ---
@@ -148,7 +148,7 @@
         return `${type} ${rawSentence}`;
     }
 
-    function generateMbtiIndex(randFn, parts) {
+    function generateIsfpIndex(randFn, parts) {
         const pick = (arr) => arr[Math.floor(randFn() * arr.length)];
         const percentage = 65 + Math.floor(randFn() * 31); // 65% to 95%
         return `${percentage}% - ${pick(parts.reasons)} ${pick(parts.results)}`;
@@ -167,10 +167,9 @@
 
             document.getElementById('adviceDisplay').innerText = generateAdvice(randFn, data.advice);
             document.getElementById('taskDisplay').innerText = generateTask(randFn, data.task);
-            document.getElementById('mbtiIndexDisplay').innerText = generateMbtiIndex(randFn, data.mbtiIndex);
+            document.getElementById('intpIndexDisplay').innerText = generateIsfpIndex(randFn, data.isfpIndex); // Changed to generateIsfpIndex
             document.getElementById('keywordDisplay').innerText = generateKeywords(randFn, data.keywords, 5);
-        }
-        catch (e) {
+        } catch (e) {
             console.error("오늘의 운세 생성 중 오류 발생:", e);
             document.getElementById('adviceDisplay').innerText = "콘텐츠를 불러오는 데 실패했습니다. 페이지를 새로고침해 주세요.";
         }
