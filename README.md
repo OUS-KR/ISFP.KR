@@ -5,10 +5,10 @@
 ### [사용자 등록](https://github.com/OUS-KR/ISFP.KR/issues/new?template=01-user-register-by-issue.yml)
 
 - `ISFP.KR/u/{사용자 아이디}` 주소 기반의 사용자 등록
-  - 사용자 예제: [ISFP.KR/u/isfp](https://isfp.kr/u/isfp)
+  - 사용자 예제: [ISFP.KR/u/isfp](https://isfp.kr/u/isfp), [ISFP.KR/u/tests/](https://isfp.kr/u/tests)
   - [사용자 등록 예제](https://github.com/OUS-KR/ISFP.KR/issues/1)
 - `ISFP.KR/@{사용자 아이디}` 형태의 짧은 주소 지원
-  - 사용자 예제: [ISFP.KR/@isfp](https://isfp.kr/@isfp)
+  - 사용자 예제: [ISFP.KR/@isfp](https://isfp.kr/@isfp), [ISFP.KR/@tests](https://isfp.kr/@tests)
 - 부적절한 아이디 (욕설, 관리자 등)는 제한되어 등록 시 삭제
 
 ### [사용자 단축주소 생성](https://github.com/OUS-KR/ISFP.KR/issues/new?template=02-user-short-url-register-by-issue.yml)
