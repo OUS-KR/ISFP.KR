@@ -42,6 +42,30 @@
         "url": "/u/tests/info-subtypes/",
         "type": "정보",
         "description": "9번, 4번, 2번 등 하위유형 비교"
+      },
+      {
+        "title": "ISFP 인간관계: 연애, 우정, 그리고 궁합",
+        "url": "/u/tests/info-relationships/",
+        "type": "정보",
+        "description": "의사소통 스타일, 타 유형과의 궁합"
+      },
+      {
+        "title": "ISFP에 대한 흔한 오해",
+        "url": "/u/tests/info-misconceptions/",
+        "type": "정보",
+        "description": "ISFP에 대한 오해와 진실"
+      },
+      {
+        "title": "ISFP 추천 취미",
+        "url": "/u/tests/info-hobbies/",
+        "type": "정보",
+        "description": "예술적 표현과 자연과의 교감"
+      },
+      {
+        "title": "ISFP 생산성 가이드",
+        "url": "/u/tests/info-productivity/",
+        "type": "정보",
+        "description": "미루는 습관을 이기는 법"
       }
     ]
   }
