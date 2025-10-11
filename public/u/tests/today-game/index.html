@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오늘의 게임 - ISFP</title>
+    <link rel="stylesheet" href="/u/tests/assets/css/main.css?20251011000000">
+    <style>
+        .game-card-content {
+            text-align: center;
+        }
+        .game-area {
+            margin-top: 1.5em;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .game-display {
+            margin-bottom: 1em;
+            color: var(--text-color);
+        }
+        .game-display.question {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .choices {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1em;
+            justify-content: center;
+        }
+        .choice-btn {
+            padding: 0.8em 1em;
+            font-size: 1em;
+            background-color: var(--primary-color);
+            color: var(--text-color-inverted);
+            border: 1px solid var(--primary-color-dark);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .choice-btn:hover {
+            background-color: var(--primary-color-dark);
+        }
+        .color-palette {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+        .game-input {
+            margin-top: 1.5em;
+            margin-bottom: 1em;
+            width: 100%;
+            max-width: 400px;
+        }
+        .game-input input[type="text"] {
+            padding: 0.5em;
+            font-size: 1em;
+            width: 100%;
+            border: 2px solid var(--border-color, #ccc);
+            border-radius: 4px;
+            background-color: var(--input-bg-color);
+            color: var(--text-color);
+        }
+        .game-input button {
+            padding: 0.6em 1.5em;
+            font-size: 1.1em;
+            background-color: #007bff;
+            color: white;
+            border: 1px solid #0069d9;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 0.5em;
+        }
+        .feedback-message {
+            margin-top: 1em;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .feedback-message.correct {
+            color: var(--success-color);
+        }
+        .feedback-message.incorrect {
+            color: var(--error-color);
+        }
+    </style>
+</head>
+<body>
+    <header class="main-nav">
+        <a href="/u/tests/" class="logo">ISFP.KR Tests</a>
+        <div class="nav-right-section">
+            <nav class="nav-links" id="nav-links"></nav>
+            <button id="theme-switcher" class="theme-switcher">🌙</button>
+            <button id="hamburger" class="hamburger">☰</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1>오늘의 ISFP 게임</h1>
+        <div class="card info-card game-card-content">
+            <div id="game-info">
+                <div id="gameTitle" class="card-title"></div>
+                <p id="gameDescription">게임을 불러오는 중...</p>
+            </div>
+            <div id="gameArea" class="game-area">
+                <!-- Game content will be loaded here by JavaScript -->
+            </div>
+            <div id="game-input-area">
+                <!-- Game input will be loaded here by JavaScript -->
+            </div>
+            <p id="feedbackMessage" class="feedback-message"></p>
+        </div>
+    </div>
+
+    <script src="/u/tests/assets/js/main.js?20251011000000" defer></script>
+    <script src="/u/tests/assets/js/dynamic-menu.js" defer></script>
+    <script>
+    function getDailySeed() {
+        const today = new Date();
+        return today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+    }
+
+    function mulberry32(seed) {
+        return function() {
+            seed |= 0;
+            seed = seed + 0x6D2B79F5 | 0;
+            let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+            t = t + Math.imul(t ^ t >>> 7, 61 | t) | 0;
+            return ((t ^ t >>> 14) >>> 0) / 4294967296;
+        }
+    }
+
+    let currentCorrectAnswer = null;
+    let currentRandFn = null;
+    let gameInProgress = false;
+
+    // --- Game Implementations for ISFP ---
+
+    // Game 0: Color Palette Quiz
+    function setupColorPaletteQuiz() {
+        document.getElementById('gameTitle').innerText = "오늘의 게임: 컬러 팔레트 퀴즈";
+        const gameArea = document.getElementById('gameArea');
+        const scenarios = [
+            { q: "'차분한 저녁노을'에 가장 어울리는 색상 조합은?", a: ["#FF5733, #FFC300", "#4A90E2, #50E3C2", "#C70039, #900C3F"], correct: 0 },
+            { q: "'싱그러운 봄의 숲'에 가장 어울리는 색상 조합은?", a: ["#2ECC71, #ABEBC6", "#F1C40F, #F39C12", "#8E44AD, #9B59B6"], correct: 0 }
+        ];
+        const scenario = scenarios[Math.floor(currentRandFn() * scenarios.length)];
+        currentCorrectAnswer = scenario.correct;
+        gameArea.innerHTML = `
+            <div class="game-display question">${scenario.q}</div>
+            <div class="choices">
+                ${scenario.a.map((palette, index) => {
+                    const colors = palette.split(', ');
+                    return `<button class="choice-btn" data-index="${index}"><div style="display:flex; justify-content:center;">${colors.map(c => `<div class=\"color-palette\" style=\"background-color:${c};\"></div>`).join('')}</div></button>`;
+                }).join('')}
+            </div>
+        `;
+        document.getElementById('game-input-area').innerHTML = '';
+        gameInProgress = true;
+    }
+
+    // Game 1: Soundscape Matching
+    function setupSoundscapeGame() {
+        document.getElementById('gameTitle').innerText = "오늘의 게임: 사운드스케이프 매칭";
+        const gameArea = document.getElementById('gameArea');
+        const scenarios = [
+            { q: "비 오는 숲속을 묘사한 글입니다. 가장 어울리는 배경음악은?", a: ["경쾌한 피아노곡", "차분한 빗소리 ASMR", "웅장한 오케스트라"], correct: 1 },
+            { q: "활기찬 시장의 풍경입니다. 어떤 소리가 들릴까요?", a: ["사람들의 웅성거림", "조용한 새소리", "파도 소리"], correct: 0 }
+        ];
+        const scenario = scenarios[Math.floor(currentRandFn() * scenarios.length)];
+        currentCorrectAnswer = scenario.correct;
+        gameArea.innerHTML = `
+            <div class="game-display question">${scenario.q}</div>
+            <div class="choices">
+                ${scenario.a.map((choice, index) => `<button class="choice-btn" data-index="${index}">${choice}</button>`).join('')}
+            </div>
+        `;
+        document.getElementById('game-input-area').innerHTML = '';
+        gameInProgress = true;
+    }
+
+    // Game 2: Quick Draw
+    function setupQuickDrawGame() {
+        document.getElementById('gameTitle').innerText = "오늘의 게임: 즉흥 드로잉";
+        const gameArea = document.getElementById('gameArea');
+        const words = ["행복", "자유", "평화", "사랑"];
+        const word = words[Math.floor(currentRandFn() * words.length)];
+        gameArea.innerHTML = `
+            <div class="game-display question">'${word}'(이)라는 단어를 30초 안에 간단한 그림으로 표현해 보세요.</div>
+            <canvas id="draw-canvas" width="300" height="150" style="border:1px solid var(--border-color);"></canvas>
+        `;
+        document.getElementById('game-input-area').innerHTML = `<button id="submitDrawing">완성!</button>`;
+        gameInProgress = true;
+
+        const canvas = document.getElementById('draw-canvas');
+        const ctx = canvas.getContext('2d');
+        let drawing = false;
+        canvas.addEventListener('mousedown', () => drawing = true);
+        canvas.addEventListener('mouseup', () => drawing = false);
+        canvas.addEventListener('mousemove', (e) => {
+            if (!drawing) return;
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = 'var(--text-color)';
+            ctx.lineTo(e.offsetX, e.offsetY);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(e.offsetX, e.offsetY);
+        });
+
+        document.getElementById('submitDrawing').onclick = () => {
+            showFeedback(true, "멋진 그림이네요! 당신의 감성이 느껴져요.");
+        };
+    }
+
+    // Game 3: Avatar Dress-up
+    function setupAvatarGame() {
+        document.getElementById('gameTitle').innerText = "오늘의 게임: 나만의 아바타 꾸미기";
+        const gameArea = document.getElementById('gameArea');
+        const themes = ["파티룩", "여행자룩", "데일리룩"];
+        const theme = themes[Math.floor(currentRandFn() * themes.length)];
+        currentCorrectAnswer = 1; // Example correct answer
+        gameArea.innerHTML = `
+            <div class="game-display question">테마: ${theme}<br>가장 마음에 드는 스타일을 골라보세요.</div>
+            <div class="choices" style="flex-direction:row;">
+                <button class="choice-btn" data-index="0"><img src="https://via.placeholder.com/100x100/ddd/000?text=Style+A" alt="Style A"></button>
+                <button class="choice-btn" data-index="1"><img src="https://via.placeholder.com/100x100/ccc/000?text=Style+B" alt="Style B"></button>
+                <button class="choice-btn" data-index="2"><img src="https://via.placeholder.com/100x100/bbb/000?text=Style+C" alt="Style C"></button>
+            </div>
+        `;
+        document.getElementById('game-input-area').innerHTML = '';
+        gameInProgress = true;
+    }
+
+    // --- Game Dispatcher and Common Logic ---
+    const gameTypes = [
+        setupColorPaletteQuiz,
+        setupSoundscapeGame,
+        setupQuickDrawGame,
+        setupAvatarGame
+    ];
+
+    function getDayOfWeekText(day) {
+        const messages = [
+            "일요일의 마무리, 아름다운 것을 감상하며 영감을 얻어보세요.", // Sunday
+            "새로운 한 주, 당신의 예술적 감각으로 시작해 보세요!", // Monday
+            "오늘은 당신의 섬세한 감성이 필요한 날입니다.", // Tuesday
+            "주 중반, 잠시 멈춰서 주변의 아름다움을 느껴보세요.", // Wednesday
+            "당신의 독특한 개성을 자유롭게 표현해 보세요.", // Thursday
+            "주말을 앞둔 금요일, 즐거운 경험을 계획해 보세요.", // Friday
+            "여유로운 토요일, 현재의 순간을 만끽하는 하루를 보내세요.", // Saturday
+        ];
+        return messages[day];
+    }
+
+    function showFeedback(isCorrect, message) {
+        const feedbackMessage = document.getElementById('feedbackMessage');
+        if (isCorrect) {
+            feedbackMessage.innerText = message || "정답입니다! 역시 ISFP, 뛰어난 예술가시군요.";
+            feedbackMessage.className = "feedback-message correct";
+        } else {
+            feedbackMessage.innerText = message || "아쉽네요. 당신의 마음이 이끄는 대로 다시 선택해 보세요.";
+            feedbackMessage.className = "feedback-message incorrect";
+        }
+        gameInProgress = false;
+    }
+
+    function handleChoiceClick(event) {
+        if (!gameInProgress) return;
+        const target = event.target.closest('.choice-btn');
+        const selectedIndex = parseInt(target.getAttribute('data-index'));
+        showFeedback(selectedIndex === currentCorrectAnswer);
+        document.querySelectorAll('.choice-btn').forEach(btn => btn.disabled = true);
+    }
+
+    function initDailyGame() {
+        const today = new Date();
+        const seed = getDailySeed();
+        currentRandFn = mulberry32(seed);
+        
+        const dayOfWeek = today.getDay();
+        document.getElementById('gameDescription').innerText = getDayOfWeekText(dayOfWeek);
+
+        const gameTypeIndex = Math.floor(currentRandFn() * gameTypes.length + dayOfWeek) % gameTypes.length;
+        gameTypes[gameTypeIndex]();
+
+        document.getElementById('feedbackMessage').innerText = '';
+        document.getElementById('feedbackMessage').className = "feedback-message";
+        
+        const currentGameFn = gameTypes[gameTypeIndex];
+        if (currentGameFn !== setupQuickDrawGame) {
+             document.querySelectorAll('.choice-btn').forEach(btn => {
+                btn.addEventListener('click', handleChoiceClick);
+            });
+        }
+    }
+
+    window.onload = function() {
+        try {
+            initDailyGame();
+        } catch (e) {
+            console.error("오늘의 게임 생성 중 오류 발생:", e);
+            document.getElementById('gameDescription').innerText = "콘텐츠를 불러오는 데 실패했습니다. 페이지를 새로고침해 주세요.";
+        }
+    };
+    </script>
+</body>
+</html>
