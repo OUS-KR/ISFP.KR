@@ -164,36 +164,14 @@
 
     // --- Game Implementations for ISFP ---
 
-    // Game 0: Color Palette Quiz
-    function setupColorPaletteQuiz() {
-        document.getElementById('gameTitle').innerText = "오늘의 게임: 컬러 팔레트 퀴즈";
+    // Game 0: Emotional Expression Choice Quiz
+    function setupEmotionalExpressionChoiceQuiz() {
+        document.getElementById('gameTitle').innerText = "오늘의 게임: 감성적 표현 선택 퀴즈";
         const gameArea = document.getElementById('gameArea');
         const scenarios = [
-            { q: "'차분한 저녁노을'에 가장 어울리는 색상 조합은?", a: ["#FF5733, #FFC300", "#4A90E2, #50E3C2", "#C70039, #900C3F"], correct: 0 },
-            { q: "'싱그러운 봄의 숲'에 가장 어울리는 색상 조합은?", a: ["#2ECC71, #ABEBC6", "#F1C40F, #F39C12", "#8E44AD, #9B59B6"], correct: 0 }
-        ];
-        const scenario = scenarios[Math.floor(currentRandFn() * scenarios.length)];
-        currentCorrectAnswer = scenario.correct;
-        gameArea.innerHTML = `
-            <div class="game-display question">${scenario.q}</div>
-            <div class="choices">
-                ${scenario.a.map((palette, index) => {
-                    const colors = palette.split(', ');
-                    return `<button class="choice-btn" data-index="${index}"><div style="display:flex; justify-content:center;">${colors.map(c => `<div class=\"color-palette\" style=\"background-color:${c};\"></div>`).join('')}</div></button>`;
-                }).join('')}
-            </div>
-        `;
-        document.getElementById('game-input-area').innerHTML = '';
-        gameInProgress = true;
-    }
-
-    // Game 1: Soundscape Matching
-    function setupSoundscapeGame() {
-        document.getElementById('gameTitle').innerText = "오늘의 게임: 사운드스케이프 매칭";
-        const gameArea = document.getElementById('gameArea');
-        const scenarios = [
-            { q: "비 오는 숲속을 묘사한 글입니다. 가장 어울리는 배경음악은?", a: ["경쾌한 피아노곡", "차분한 빗소리 ASMR", "웅장한 오케스트라"], correct: 1 },
-            { q: "활기찬 시장의 풍경입니다. 어떤 소리가 들릴까요?", a: ["사람들의 웅성거림", "조용한 새소리", "파도 소리"], correct: 0 }
+            { q: "오랜만에 만난 친구에게 어떤 감정을 표현하시겠습니까?", a: ["따뜻한 포옹과 함께 진심 어린 미소를 보낸다.", "반가움을 표현하며 안부를 묻는다.", "어색함을 풀기 위해 농담을 건넨다."], correct: 0 },
+            { q: "아름다운 노을을 보았습니다. 당신의 감성을 가장 잘 표현하는 말은?", a: ["말로 표현할 수 없는 경이로움과 평화로움.", "오늘 하루의 고단함을 잊게 하는 위로.", "사진으로 남겨두고 싶은 순간."], correct: 0 },
+            { q: "친구가 힘든 이야기를 털어놓습니다. 당신의 반응은?", a: ["친구의 감정을 깊이 공감하며 조용히 곁을 지켜준다.", "즉시 해결책을 제시하며 조언한다.", "친구의 기분을 전환시키기 위해 다른 이야기를 꺼낸다."], correct: 0 }
         ];
         const scenario = scenarios[Math.floor(currentRandFn() * scenarios.length)];
         currentCorrectAnswer = scenario.correct;
@@ -207,53 +185,63 @@
         gameInProgress = true;
     }
 
-    // Game 2: Quick Draw
-    function setupQuickDrawGame() {
-        document.getElementById('gameTitle').innerText = "오늘의 게임: 즉흥 드로잉";
+    // Game 1: Inner Sound Exploration Quiz
+    function setupInnerSoundExplorationQuiz() {
+        document.getElementById('gameTitle').innerText = "오늘의 게임: 내면의 소리 탐험 퀴즈";
         const gameArea = document.getElementById('gameArea');
-        const words = ["행복", "자유", "평화", "사랑"];
-        const word = words[Math.floor(currentRandFn() * words.length)];
+        const scenarios = [
+            { q: "고요한 새벽, 창밖으로 빗소리가 들려옵니다. 당신의 내면의 소리는?", a: ["차분함과 평화로움.", "쓸쓸함과 고독함.", "새로운 시작에 대한 기대감."], correct: 0 },
+            { q: "복잡한 도시 속에서 혼자 걷고 있습니다. 당신의 내면의 소리는?", a: ["수많은 사람들의 이야기와 감정.", "나만의 공간을 찾고 싶은 갈망.", "도시의 활기찬 에너지."], correct: 1 },
+            { q: "오래된 숲길을 걷고 있습니다. 바람 소리와 나뭇잎 소리가 들려옵니다. 당신의 내면의 소리는?", a: ["자연과의 교감과 자유로움.", "미지의 존재에 대한 호기심.", "고요함 속에서 느껴지는 불안감."], correct: 0 }
+        ];
+        const scenario = scenarios[Math.floor(currentRandFn() * scenarios.length)];
+        currentCorrectAnswer = scenario.correct;
         gameArea.innerHTML = `
-            <div class="game-display question">'${word}'(이)라는 단어를 30초 안에 간단한 그림으로 표현해 보세요.</div>
-            <canvas id="draw-canvas" width="300" height="150" style="border:1px solid var(--border-color);"></canvas>
+            <div class="game-display question">${scenario.q}</div>
+            <div class="choices">
+                ${scenario.a.map((choice, index) => `<button class="choice-btn" data-index="${index}">${choice}</button>`).join('')}
+            </div>
         `;
-        document.getElementById('game-input-area').innerHTML = `<button id="submitDrawing">완성!</button>`;
+        document.getElementById('game-input-area').innerHTML = '';
         gameInProgress = true;
-
-        const canvas = document.getElementById('draw-canvas');
-        const ctx = canvas.getContext('2d');
-        let drawing = false;
-        canvas.addEventListener('mousedown', () => drawing = true);
-        canvas.addEventListener('mouseup', () => drawing = false);
-        canvas.addEventListener('mousemove', (e) => {
-            if (!drawing) return;
-            ctx.lineWidth = 3;
-            ctx.lineCap = 'round';
-            ctx.strokeStyle = 'var(--text-color)';
-            ctx.lineTo(e.offsetX, e.offsetY);
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.moveTo(e.offsetX, e.offsetY);
-        });
-
-        document.getElementById('submitDrawing').onclick = () => {
-            showFeedback(true, "멋진 그림이네요! 당신의 감성이 느껴져요.");
-        };
     }
 
-    // Game 3: Avatar Dress-up
-    function setupAvatarGame() {
-        document.getElementById('gameTitle').innerText = "오늘의 게임: 나만의 아바타 꾸미기";
+    // Game 2: Free Spirit Choice Quiz
+    function setupFreeSpiritChoiceQuiz() {
+        document.getElementById('gameTitle').innerText = "오늘의 게임: 자유로운 영혼 선택 퀴즈";
         const gameArea = document.getElementById('gameArea');
-        const themes = ["파티룩", "여행자룩", "데일리룩"];
-        const theme = themes[Math.floor(currentRandFn() * themes.length)];
-        currentCorrectAnswer = 1; // Example correct answer
+        const scenarios = [
+            { q: "주말에 특별한 계획이 없습니다. 당신은 무엇을 하시겠습니까?", a: ["발길 닿는 대로 새로운 곳을 탐험한다.", "집에서 좋아하는 영화를 보며 휴식을 취한다.", "친구들에게 연락하여 즉흥적인 모임을 제안한다."], correct: 0 },
+            { q: "새로운 취미를 시작하려고 합니다. 어떤 방식이 당신에게 가장 적합할까요?", a: ["다양한 활동을 직접 경험하며 자신에게 맞는 것을 찾는다.", "전문가의 조언을 듣고 체계적인 계획을 세운다.", "유행하는 취미를 따라 해본다."], correct: 0 },
+            { q: "여행 계획을 세울 때 당신의 스타일은?", a: ["자유로운 탐험과 즉흥적인 일정을 선호한다.", "모든 것을 미리 계획하고 준비한다.", "친구들에게 모든 계획을 맡긴다."], correct: 0 }
+        ];
+        const scenario = scenarios[Math.floor(currentRandFn() * scenarios.length)];
+        currentCorrectAnswer = scenario.correct;
         gameArea.innerHTML = `
-            <div class="game-display question">테마: ${theme}<br>가장 마음에 드는 스타일을 골라보세요.</div>
-            <div class="choices" style="flex-direction:row;">
-                <button class="choice-btn" data-index="0"><img src="https://via.placeholder.com/100x100/ddd/000?text=Style+A" alt="Style A"></button>
-                <button class="choice-btn" data-index="1"><img src="https://via.placeholder.com/100x100/ccc/000?text=Style+B" alt="Style B"></button>
-                <button class="choice-btn" data-index="2"><img src="https://via.placeholder.com/100x100/bbb/000?text=Style+C" alt="Style C"></button>
+            <div class="game-display question">${scenario.q}</div>
+            <div class="choices">
+                ${scenario.a.map((choice, index) => `<button class="choice-btn" data-index="${index}">${choice}</button>`).join('')}
+            </div>
+        `;
+        document.getElementById('game-input-area').innerHTML = '';
+        gameInProgress = true;
+    }
+
+    // Game 3: Authenticity Expression Quiz
+    function setupAuthenticityExpressionQuiz() {
+        document.getElementById('gameTitle').innerText = "오늘의 게임: 진정성 표현 퀴즈";
+        const gameArea = document.getElementById('gameArea');
+        const scenarios = [
+            { q: "새로운 모임에 참석합니다. 당신은 어떤 모습으로 자신을 표현하시겠습니까?", a: ["나만의 개성을 살린 편안하고 자연스러운 옷차림.", "다른 사람들에게 좋은 인상을 줄 수 있는 단정하고 세련된 옷차림.", "유행에 맞춰 가장 인기 있는 스타일의 옷차림."], correct: 0 },
+            { q: "자신의 생각과 다른 의견을 가진 사람과 대화할 때 당신은?", a: ["나의 진심을 솔직하게 표현하고, 상대방의 의견을 존중한다.", "갈등을 피하기 위해 나의 의견을 숨기고, 상대방의 의견에 동조한다.", "논리적으로 상대방의 의견이 틀렸음을 증명한다."], correct: 0 },
+            { q: "자신이 만든 작품을 다른 사람들에게 보여줄 때 당신은?", a: ["나의 감성과 개성을 담은 작품을 자신 있게 보여준다.", "다른 사람들의 평가를 의식하며, 완벽한 작품을 보여주려 한다.", "작품을 보여주기보다 숨기고 싶어 한다."], correct: 0 }
+        ];
+        const scenario = scenarios[Math.floor(currentRandFn() * scenarios.length)];
+        currentCorrectAnswer = scenario.correct;
+        gameArea.innerHTML = `
+            <div class="game-display question">${scenario.q}</div>
+            <div class="choices">
+                ${scenario.a.map((choice, index) => `<button class="choice-btn" data-index="${index}">${choice}</button>`).join('')}
             </div>
         `;
         document.getElementById('game-input-area').innerHTML = '';
@@ -262,21 +250,21 @@
 
     // --- Game Dispatcher and Common Logic ---
     const gameTypes = [
-        setupColorPaletteQuiz,
-        setupSoundscapeGame,
-        setupQuickDrawGame,
-        setupAvatarGame
+        setupEmotionalExpressionChoiceQuiz,
+        setupInnerSoundExplorationQuiz,
+        setupFreeSpiritChoiceQuiz,
+        setupAuthenticityExpressionQuiz
     ];
 
     function getDayOfWeekText(day) {
         const messages = [
-            "일요일의 마무리, 아름다운 것을 감상하며 영감을 얻어보세요.", // Sunday
-            "새로운 한 주, 당신의 예술적 감각으로 시작해 보세요!", // Monday
-            "오늘은 당신의 섬세한 감성이 필요한 날입니다.", // Tuesday
-            "주 중반, 잠시 멈춰서 주변의 아름다움을 느껴보세요.", // Wednesday
-            "당신의 독특한 개성을 자유롭게 표현해 보세요.", // Thursday
-            "주말을 앞둔 금요일, 즐거운 경험을 계획해 보세요.", // Friday
-            "여유로운 토요일, 현재의 순간을 만끽하는 하루를 보내세요.", // Saturday
+            "일요일의 마무리, 당신의 내면을 탐험하며 새로운 영감을 찾아보세요.", // Sunday
+            "새로운 한 주, 당신의 감성으로 세상을 아름답게 만들어 보세요!", // Monday
+            "오늘은 당신의 예술적 재능이 빛을 발하는 날입니다.", // Tuesday
+            "주 중반, 자유로운 영혼을 따라 새로운 경험을 즐겨보세요.", // Wednesday
+            "당신의 진정성이 주변 사람들에게 영감을 줍니다.", // Thursday
+            "주말을 앞둔 금요일, 아름다운 것들을 감상하며 감성을 충전해 보세요.", // Friday
+            "여유로운 토요일, 현재 순간을 만끽하며 즐거운 시간을 보내세요!", // Saturday
         ];
         return messages[day];
     }
@@ -284,10 +272,10 @@
     function showFeedback(isCorrect, message) {
         const feedbackMessage = document.getElementById('feedbackMessage');
         if (isCorrect) {
-            feedbackMessage.innerText = message || "정답입니다! 역시 ISFP, 뛰어난 예술가시군요.";
+            feedbackMessage.innerText = message || "정답입니다! 역시 ISFP, 섬세한 감성과 예술적 영감을 지니셨군요.";
             feedbackMessage.className = "feedback-message correct";
         } else {
-            feedbackMessage.innerText = message || "아쉽네요. 당신의 마음이 이끄는 대로 다시 선택해 보세요.";
+            feedbackMessage.innerText = message || "아쉽네요. 다른 감성적인 표현은 없었을까요?";
             feedbackMessage.className = "feedback-message incorrect";
         }
         gameInProgress = false;
@@ -295,8 +283,7 @@
 
     function handleChoiceClick(event) {
         if (!gameInProgress) return;
-        const target = event.target.closest('.choice-btn');
-        const selectedIndex = parseInt(target.getAttribute('data-index'));
+        const selectedIndex = parseInt(event.target.getAttribute('data-index'));
         showFeedback(selectedIndex === currentCorrectAnswer);
         document.querySelectorAll('.choice-btn').forEach(btn => btn.disabled = true);
     }
@@ -315,12 +302,10 @@
         document.getElementById('feedbackMessage').innerText = '';
         document.getElementById('feedbackMessage').className = "feedback-message";
         
-        const currentGameFn = gameTypes[gameTypeIndex];
-        if (currentGameFn !== setupQuickDrawGame) {
-             document.querySelectorAll('.choice-btn').forEach(btn => {
-                btn.addEventListener('click', handleChoiceClick);
-            });
-        }
+        // Add event listeners after creating the elements
+        document.querySelectorAll('.choice-btn').forEach(btn => {
+            btn.addEventListener('click', handleChoiceClick);
+        });
     }
 
     window.onload = function() {
