@@ -5,38 +5,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ISFP 빙고 챌린지</title>
     <link rel="stylesheet" href="/u/tests/assets/css/main.css?20251012150000">
+    <style>
+        .bingo-container {
+            overflow-x: auto;
+            padding-bottom: 10px; /* Make space for scrollbar */
+        }
+        .bingo-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin: 30px 0;
+            min-width: 500px; /* Prevent tiles from becoming too small */
+        }
+        .bingo-cell {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            aspect-ratio: 1 / 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 0.9em;
+            padding: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            user-select: none;
+        }
+        .bingo-cell.checked {
+            background-color: var(--h-color);
+            color: var(--container-bg);
+            font-weight: bold;
+        }
+        .bingo-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        #bingo-counter {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        #reset-btn {
+            padding: 8px 15px;
+            font-size: 0.9em;
+            background-color: var(--card-border);
+            color: var(--text-color);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <header class="main-nav">
         <a href="/u/tests/" class="logo">ISFP.KR Tests</a>
         <div class="nav-right-section">
-            <nav class="nav-links" id="nav-links">
-                <!-- Dynamic menu will be loaded here by dynamic-menu.js -->
-            </nav>
+            <nav class="nav-links" id="nav-links"></nav>
             <button id="theme-switcher" class="theme-switcher">🌙</button>
             <button id="hamburger" class="hamburger">☰</button>
         </div>
     </header>
-    <div id="quiz-container" class="container">
-        <div id="start-area">
-            <h1>ISFP 빙고 챌린지</h1>
-            <p>ISFP 특징으로 구성된 빙고 게임</p>
-            <button id="start-btn" class="btn btn-primary">테스트 시작하기</button>
+    <div class="container">
+        <h1>ISFP 빙고 챌린지</h1>
+        <p style="text-align:center;">나는 얼마나 ISFP일까? 아래 빙고판에서 해당하는 항목을 클릭해 보세요.<br>완성된 빙고판을 캡쳐해서 친구들과 공유해 보세요!</p>
+        
+        <div class="bingo-controls">
+            <div id="bingo-counter">체크된 항목 0/25</div>
+            <button id="reset-btn">초기화</button>
         </div>
-
-        <div id="quiz-area" class="hidden">
-            <div class="progress-bar-container">
-                <div id="progress-bar"></div>
-            </div>
-            <div id="question"></div>
-            <div id="answers"></div>
-        </div>
-
-        <div id="result-area" class="hidden">
-            <div class="result-card">
-                <h2 id="result-title" class="result-title"></h2>
-                <p id="result-text"></p>
-                <button id="retry-btn" class="btn btn-primary">다시하기</button>
+        
+        <div class="bingo-container">
+            <div class="bingo-grid" id="bingo-grid">
+                <!-- Bingo items will be inserted here by JavaScript -->
             </div>
         </div>
     </div>
@@ -44,103 +87,67 @@
     <script src="/u/tests/assets/js/main.js?20251012150000" defer></script>
     <script src="/u/tests/assets/js/dynamic-menu.js" defer></script>
     <script>
-        const quizContainer = document.getElementById('quiz-container');
-        const startArea = document.getElementById('start-area');
-        const quizArea = document.getElementById('quiz-area');
-        const resultArea = document.getElementById('result-area');
-        const startBtn = document.getElementById('start-btn');
-        const retryBtn = document.getElementById('retry-btn');
-        const questionEl = document.getElementById('question');
-        const answersEl = document.getElementById('answers');
-        const resultTitleEl = document.getElementById('result-title');
-        const resultTextEl = document.getElementById('result-text');
-        const progressBar = document.getElementById('progress-bar');
+        document.addEventListener('DOMContentLoaded', () => {
+            const bingoGrid = document.getElementById('bingo-grid');
+            const bingoCounter = document.getElementById('bingo-counter');
+            const resetBtn = document.getElementById('reset-btn');
+            let checkedCount = 0;
 
-        let currentQuestionIndex = 0;
-        let score = 0;
+            const bingoItems = [
+                "귀찮이즘 만렙, 만사 귀찮음",
+                "연락 뜸하지만 만나면 잘 놈",
+                "결정장애 (특히 메뉴 고를 때)",
+                "칭찬 받으면 하루 종일 생각남",
+                "나만의 예술가적 감성 있음",
+                "계획? 그게 뭔데? 일단 나가자",
+                "혼자만의 시간이 없으면 죽음",
+                "겉으로는 \"ㅋㅋ\", 속으로는 온갖 생각 다 함",
+                "배려의 아이콘, 거절 잘 못함",
+                "\"아무거나\" (하지만 아무거나 아님)",
+                "\"그럴 수 있지\" (진심으로 이해함)",
+                "집에 가면 연락 두절",
+                "\"다 너 잘되라고 하는 소리야\" (하지만 꼰대짓은 싫어함)",
+                "눈치는 빠른데, 모르는 척함",
+                "갑자기 꽂히는 것에 돈 잘 씀",
+                "나는 나, 너는 너. 개인주의 존중",
+                "부탁 거절 못 해서 내가 힘듦",
+                "누워있는 거 제일 좋아함",
+                "겉은 순둥, 속은 고집쟁이",
+                "예쁜 게 최고야, 아름다운 거 좋아함",
+                "싸우는 거 싫어서 그냥 내가 져줌",
+                "말보다 행동으로 보여주는 편",
+                "나에 대해 잘 모르는 사람이 함부로 말하면 상처받음",
+                "조용한 관종",
+                "\"지금 이게 중요해?\" 현재가 가장 중요"
+            ];
 
-        // Placeholder quiz data
-        const quizData = [
-            {
-                question: '이것은 ISFP 빙고 챌린지의 첫 번째 질문입니다.',
-                answers: [
-                    { text: '답변 1', score: 10 },
-                    { text: '답변 2', score: 5 },
-                    { text: '답변 3', score: 1 }
-                ]
-            },
-            {
-                question: '이것은 두 번째 질문입니다.',
-                answers: [
-                    { text: '답변 A', score: 10 },
-                    { text: '답변 B', score: 5 },
-                    { text: '답변 C', score: 1 }
-                ]
-            }
-        ];
+            // Create bingo cells
+            bingoItems.forEach(itemText => {
+                const cell = document.createElement('div');
+                cell.classList.add('bingo-cell');
+                cell.textContent = itemText;
+                bingoGrid.appendChild(cell);
 
-        startBtn.addEventListener('click', startQuiz);
-        retryBtn.addEventListener('click', startQuiz);
-
-        function setInitialView() {
-            startArea.style.display = 'block';
-            quizArea.style.display = 'none';
-            resultArea.style.display = 'none';
-        }
-
-        function startQuiz() {
-            currentQuestionIndex = 0;
-            score = 0;
-            
-            resultTitleEl.innerText = '';
-            resultTextEl.innerText = '';
-            
-            startArea.style.display = 'none';
-            quizArea.style.display = 'block';
-            resultArea.style.display = 'none';
-            
-            showQuestion();
-        }
-
-        function showQuestion() {
-            updateProgressBar();
-            const currentQuestion = quizData[currentQuestionIndex];
-            questionEl.innerText = currentQuestion.question;
-            answersEl.innerHTML = '';
-            currentQuestion.answers.forEach(answer => {
-                const button = document.createElement('button');
-                button.innerText = answer.text;
-                button.addEventListener('click', (e) => selectAnswer(answer.score, e.target));
-                answersEl.appendChild(button);
+                cell.addEventListener('click', () => {
+                    cell.classList.toggle('checked');
+                    updateCounter();
+                });
             });
-        }
 
-        function showResult() {
-            quizArea.style.display = 'none';
-            resultArea.style.display = 'block';
-            let resultTitle = '';
-            let resultMessage = '';
-            // Generic result based on score
-            if (score >= 15) {
-                resultTitle = '높은 점수';
-                resultMessage = '당신은 이 테스트에서 높은 점수를 받았습니다!';
-            } else if (score >= 10) {
-                resultTitle = '중간 점수';
-                resultMessage = '당신은 이 테스트에서 중간 점수를 받았습니다.';
-            } else {
-                resultTitle = '낮은 점수';
-                resultMessage = '당신은 이 테스트에서 낮은 점수를 받았습니다.';
+            // Reset button logic
+            resetBtn.addEventListener('click', () => {
+                const checkedCells = document.querySelectorAll('.bingo-cell.checked');
+                checkedCells.forEach(cell => {
+                    cell.classList.remove('checked');
+                });
+                updateCounter();
+            });
+
+            function updateCounter() {
+                checkedCount = document.querySelectorAll('.bingo-cell.checked').length;
+                bingoCounter.textContent = `체크된 항목 ${checkedCount}/25`;
             }
-            resultTitleEl.innerText = resultTitle;
-            resultTextEl.innerText = resultMessage;
-        }
-
-        function updateProgressBar() {
-            const progress = (currentQuestionIndex / quizData.length) * 100;
-            progressBar.style.width = `${progress}%`;
-        }
-
-        setInitialView();
+        });
     </script>
 </body>
 </html>
