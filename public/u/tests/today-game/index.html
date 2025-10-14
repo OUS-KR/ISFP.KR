@@ -248,65 +248,7 @@
         gameInProgress = true;
     }
 
-    // --- Game Dispatcher and Common Logic ---
-    const gameTypes = [
-        setupEmotionalExpressionChoiceQuiz,
-        setupInnerSoundExplorationQuiz,
-        setupFreeSpiritChoiceQuiz,
-        setupAuthenticityExpressionQuiz
-    ];
-
-    function getDayOfWeekText(day) {
-        const messages = [
-            "일요일의 마무리, 당신의 내면을 탐험하며 새로운 영감을 찾아보세요.", // Sunday
-            "새로운 한 주, 당신의 감성으로 세상을 아름답게 만들어 보세요!", // Monday
-            "오늘은 당신의 예술적 재능이 빛을 발하는 날입니다.", // Tuesday
-            "주 중반, 자유로운 영혼을 따라 새로운 경험을 즐겨보세요.", // Wednesday
-            "당신의 진정성이 주변 사람들에게 영감을 줍니다.", // Thursday
-            "주말을 앞둔 금요일, 아름다운 것들을 감상하며 감성을 충전해 보세요.", // Friday
-            "여유로운 토요일, 현재 순간을 만끽하며 즐거운 시간을 보내세요!", // Saturday
-        ];
-        return messages[day];
-    }
-
-    function showFeedback(isCorrect, message) {
-        const feedbackMessage = document.getElementById('feedbackMessage');
-        if (isCorrect) {
-            feedbackMessage.innerText = message || "정답입니다! 역시 ISFP, 섬세한 감성과 예술적 영감을 지니셨군요.";
-            feedbackMessage.className = "feedback-message correct";
-        } else {
-            feedbackMessage.innerText = message || "아쉽네요. 다른 감성적인 표현은 없었을까요?";
-            feedbackMessage.className = "feedback-message incorrect";
-        }
-        gameInProgress = false;
-    }
-
-    function handleChoiceClick(event) {
-        if (!gameInProgress) return;
-        const selectedIndex = parseInt(event.target.getAttribute('data-index'));
-        showFeedback(selectedIndex === currentCorrectAnswer);
-        document.querySelectorAll('.choice-btn').forEach(btn => btn.disabled = true);
-    }
-
-    function initDailyGame() {
-        const today = new Date();
-        const seed = getDailySeed();
-        currentRandFn = mulberry32(seed);
-        
-        const dayOfWeek = today.getDay();
-        document.getElementById('gameDescription').innerText = getDayOfWeekText(dayOfWeek);
-
-        const gameTypeIndex = Math.floor(currentRandFn() * gameTypes.length + dayOfWeek) % gameTypes.length;
-        gameTypes[gameTypeIndex]();
-
-        document.getElementById('feedbackMessage').innerText = '';
-        document.getElementById('feedbackMessage').className = "feedback-message";
-        
-        // Add event listeners after creating the elements
-        document.querySelectorAll('.choice-btn').forEach(btn => {
-            btn.addEventListener('click', handleChoiceClick);
-        });
-    }
+    
 
     window.onload = function() {
         try {
