@@ -1,1 +1,1239 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ISFP — isfp.kr</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Syne:wght@300;400;500&family=Inter:wght@300;400&display=swap"
+      rel="stylesheet"
+    />
 
+    <style type="text/tailwindcss">
+      @theme {
+        /* ── Earth / Terracotta — 오감의 대지 ── */
+        --color-terra-50:   #fdf5f0;
+        --color-terra-100:  #fae4d4;
+        --color-terra-200:  #f5c5a3;
+        --color-terra-300:  #eca070;
+        --color-terra-400:  #e07844;
+        --color-terra-500:  #c95f2a;
+        --color-terra-600:  #a44820;
+
+        /* ── Dusk / Sunset — 석양의 하늘 ── */
+        --color-dusk-300:   #f9c97a;
+        --color-dusk-400:   #f5ad4a;
+        --color-dusk-500:   #e08820;
+
+        /* ── Sage — 자연의 초록 ── */
+        --color-sage-100:   #eef3ec;
+        --color-sage-200:   #ccddc8;
+        --color-sage-300:   #a3c09c;
+        --color-sage-400:   #76a06e;
+        --color-sage-500:   #507a48;
+
+        /* ── Mauve / Blush — 내면의 부드러움 ── */
+        --color-mauve-200:  #f0e0e8;
+        --color-mauve-300:  #ddb8cc;
+        --color-mauve-400:  #c28fa8;
+        --color-mauve-500:  #9e6080;
+
+        /* ── Canvas background — 대지의 어둠 ── */
+        --color-canvas-900: #140e08;
+        --color-canvas-950: #0c0804;
+
+        --font-display: "Playfair Display", Georgia, serif;
+        --font-heading: "Syne", system-ui, sans-serif;
+        --font-body:    "Inter", system-ui, sans-serif;
+      }
+
+      @layer base {
+        *, *::before, *::after { box-sizing: border-box; }
+
+        html {
+          scroll-behavior: smooth;
+          background-color: var(--color-canvas-950);
+          color: #e8ddd4;
+        }
+
+        body {
+          font-family: var(--font-body);
+          font-weight: 300;
+          letter-spacing: 0.01em;
+          overflow-x: hidden;
+        }
+
+        ::selection {
+          background-color: rgba(192,95,42,0.4);
+          color: #fff;
+        }
+
+        ::-webkit-scrollbar { width: 3px; }
+        ::-webkit-scrollbar-track { background: var(--color-canvas-950); }
+        ::-webkit-scrollbar-thumb {
+          background: rgba(224,120,68,0.25);
+          border-radius: 2px;
+        }
+      }
+
+      /* ══════════════════════════════════════════
+         CANVAS & BG LAYERS
+      ══════════════════════════════════════════ */
+      #art-canvas {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* Warm dusk horizon — 대지와 하늘의 경계 */
+      .dusk-layer {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 1;
+        background:
+          radial-gradient(ellipse 100% 50% at 50% 100%,
+            rgba(192,95,42, 0.14) 0%, transparent 60%),
+          radial-gradient(ellipse 60% 40% at 20% 70%,
+            rgba(240,173,74, 0.07) 0%, transparent 55%),
+          radial-gradient(ellipse 60% 40% at 80% 65%,
+            rgba(118,160,110, 0.06) 0%, transparent 50%),
+          radial-gradient(ellipse 80% 60% at 50% 0%,
+            rgba(30,15,5, 0.5) 0%, transparent 70%);
+        animation: dusk-breathe 16s ease-in-out infinite alternate;
+      }
+
+      @keyframes dusk-breathe {
+        0%   { opacity: 0.75; }
+        50%  { opacity: 1;    }
+        100% { opacity: 0.85; }
+      }
+
+      /* Grain texture — 캔버스의 거친 질감 */
+      .grain-layer {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 2;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.04'/%3E%3C/svg%3E");
+        background-size: 256px 256px;
+        opacity: 0.5;
+        mix-blend-mode: overlay;
+      }
+
+      /* Vignette */
+      .vignette {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 2;
+        background: radial-gradient(
+          ellipse at center,
+          transparent 45%,
+          rgba(12,8,4,0.7) 100%
+        );
+      }
+
+      /* ══════════════════════════════════════════
+         SITE WRAPPER
+      ══════════════════════════════════════════ */
+      .site-wrapper {
+        position: relative;
+        z-index: 3;
+        min-height: 100dvh;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+      }
+
+      /* ══════════════════════════════════════════
+         HEADER
+      ══════════════════════════════════════════ */
+      .glass-header {
+        background: rgba(12,8,4,0.55);
+        backdrop-filter: blur(20px) saturate(1.3);
+        border-bottom: 1px solid rgba(224,120,68,0.08);
+      }
+
+      /* ══════════════════════════════════════════
+         LOGO —세리프 이탤릭, 따뜻한 대지색
+      ══════════════════════════════════════════ */
+      .logo-isfp {
+        font-family: var(--font-display);
+        font-style: italic;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        font-size: clamp(3.4rem, 9.5vw, 7.5rem);
+        line-height: 1;
+        color: transparent;
+        background: linear-gradient(
+          150deg,
+          var(--color-dusk-300)   0%,
+          var(--color-terra-300)  35%,
+          var(--color-mauve-300)  65%,
+          var(--color-terra-200)  100%
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        filter: drop-shadow(0 0 28px rgba(192,95,42,0.2));
+        transition: filter 0.7s ease;
+      }
+
+      .logo-isfp:hover {
+        filter: drop-shadow(0 0 45px rgba(192,95,42,0.4))
+                drop-shadow(0 0 20px rgba(194,143,168,0.2));
+      }
+
+      /* ══════════════════════════════════════════
+         NAV
+      ══════════════════════════════════════════ */
+      .nav-link {
+        font-family: var(--font-heading);
+        font-weight: 300;
+        font-size: 0.68rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: rgba(232,221,212,0.35);
+        position: relative;
+        transition: color 0.35s ease;
+      }
+
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: -3px; left: 0;
+        width: 0; height: 1px;
+        background: linear-gradient(90deg,
+          var(--color-terra-400), var(--color-dusk-300));
+        transition: width 0.45s cubic-bezier(0.4,0,0.2,1);
+      }
+
+      .nav-link:hover { color: #e8ddd4; }
+      .nav-link:hover::after { width: 100%; }
+
+      /* ══════════════════════════════════════════
+         HERO
+      ══════════════════════════════════════════ */
+      .hero-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        position: relative;
+        padding: clamp(5rem,14vw,11rem) 1.5rem clamp(4rem,9vw,8rem);
+        min-height: 90dvh;
+        overflow: hidden;
+      }
+
+      /* Ghost bg — 캔버스처럼 바랜 글자 */
+      .hero-bg-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-53%);
+        font-family: var(--font-display);
+        font-style: italic;
+        font-weight: 500;
+        font-size: clamp(22vw,32vw,42vw);
+        letter-spacing: 0.06em;
+        color: transparent;
+        -webkit-text-stroke: 1px rgba(192,95,42,0.06);
+        user-select: none;
+        pointer-events: none;
+        white-space: nowrap;
+        line-height: 1;
+      }
+
+      /* Warm horizon glow — 석양의 대지 */
+      .horizon-glow {
+        position: absolute;
+        bottom: -10%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: min(900px,130vw);
+        height: min(400px,60vw);
+        background: radial-gradient(
+          ellipse at center bottom,
+          rgba(192,95,42,0.12)  0%,
+          rgba(240,173,74,0.07) 35%,
+          transparent           70%
+        );
+        pointer-events: none;
+        animation: horizon-pulse 9s ease-in-out infinite;
+      }
+
+      @keyframes horizon-pulse {
+        0%, 100% { opacity: 0.7; transform: translateX(-50%) scaleX(1);    }
+        50%       { opacity: 1;   transform: translateX(-50%) scaleX(1.08); }
+      }
+
+      /* ══════════════════════════════════════════
+         SECTION LABEL
+      ══════════════════════════════════════════ */
+      .section-label {
+        font-family: var(--font-heading);
+        font-size: 0.6rem;
+        letter-spacing: 0.38em;
+        text-transform: uppercase;
+        color: var(--color-terra-400);
+        font-weight: 400;
+      }
+
+      /* ══════════════════════════════════════════
+         TAGLINE
+      ══════════════════════════════════════════ */
+      .tagline {
+        font-family: var(--font-display);
+        font-style: italic;
+        font-weight: 400;
+        font-size: clamp(1.05rem, 2.6vw, 1.45rem);
+        color: rgba(232,221,212,0.5);
+        letter-spacing: 0.03em;
+        line-height: 1.75;
+      }
+
+      /* ══════════════════════════════════════════
+         ARTIST BADGE
+      ══════════════════════════════════════════ */
+      .artist-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.4rem 1.1rem;
+        background: rgba(192,95,42,0.08);
+        border: 1px solid rgba(192,95,42,0.25);
+        border-radius: 999px;
+      }
+
+      .brush-icon {
+        font-size: 0.9rem;
+        animation: brush-sway 3.5s ease-in-out infinite;
+      }
+
+      @keyframes brush-sway {
+        0%, 100% { transform: rotate(-8deg);  }
+        50%       { transform: rotate(8deg);   }
+      }
+
+      /* ══════════════════════════════════════════
+         DIVIDERS
+      ══════════════════════════════════════════ */
+      .art-line-h {
+        border: none;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent 0%,
+          rgba(192,95,42,0.12) 20%,
+          rgba(240,173,74,0.2) 50%,
+          rgba(163,192,156,0.12) 80%,
+          transparent 100%
+        );
+        margin: 0;
+      }
+
+      .art-line-v {
+        width: 1px;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          var(--color-terra-400)  35%,
+          var(--color-dusk-300)   65%,
+          transparent
+        );
+        animation: vline-pulse 5s ease-in-out infinite alternate;
+      }
+
+      @keyframes vline-pulse {
+        from { opacity: 0.45; transform: scaleY(0.92); }
+        to   { opacity: 1;    transform: scaleY(1.08); }
+      }
+
+      /* ══════════════════════════════════════════
+         LETTER BLOCKS — I · S · F · P
+      ══════════════════════════════════════════ */
+      .letter-block {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 1.9rem 1.3rem;
+        border: 1px solid rgba(232,221,212,0.07);
+        background: rgba(232,221,212,0.02);
+        backdrop-filter: blur(10px);
+        flex: 1;
+        min-width: min(120px,100%);
+        transition:
+          border-color 0.45s ease,
+          transform    0.45s cubic-bezier(0.22,1,0.36,1),
+          box-shadow   0.45s ease;
+        cursor: default;
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* brush-stroke shimmer on hover */
+      .letter-block::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        transition: opacity 0.45s ease;
+      }
+
+      .lb-i::before { background: radial-gradient(ellipse at 50% 100%, rgba(192,95,42,0.07), transparent 70%); }
+      .lb-s::before { background: radial-gradient(ellipse at 50% 100%, rgba(240,173,74,0.07), transparent 70%); }
+      .lb-f::before { background: radial-gradient(ellipse at 50% 100%, rgba(118,160,110,0.08), transparent 70%); }
+      .lb-p::before { background: radial-gradient(ellipse at 50% 100%, rgba(194,143,168,0.08), transparent 70%); }
+
+      .letter-block:hover { transform: translateY(-7px); }
+      .letter-block:hover::before { opacity: 1; }
+
+      .lb-i:hover { border-color:rgba(192,95,42,0.35);  box-shadow:0 24px 50px rgba(0,0,0,0.6), 0 0 30px rgba(192,95,42,0.08); }
+      .lb-s:hover { border-color:rgba(240,173,74,0.35); box-shadow:0 24px 50px rgba(0,0,0,0.6), 0 0 30px rgba(240,173,74,0.08); }
+      .lb-f:hover { border-color:rgba(118,160,110,0.35);box-shadow:0 24px 50px rgba(0,0,0,0.6), 0 0 30px rgba(118,160,110,0.08);}
+      .lb-p:hover { border-color:rgba(194,143,168,0.35);box-shadow:0 24px 50px rgba(0,0,0,0.6), 0 0 30px rgba(194,143,168,0.08);}
+
+      .letter-big {
+        font-family: var(--font-display);
+        font-style: italic;
+        font-weight: 500;
+        font-size: clamp(2.2rem,5.2vw,3.6rem);
+        line-height: 1;
+        color: transparent;
+        -webkit-background-clip: text;
+        background-clip: text;
+      }
+
+      .l-i { background: linear-gradient(150deg, var(--color-terra-200), var(--color-terra-500)); }
+      .l-s { background: linear-gradient(150deg, var(--color-dusk-300),  var(--color-dusk-500));  }
+      .l-f { background: linear-gradient(150deg, var(--color-sage-200),  var(--color-sage-500));  }
+      .l-p { background: linear-gradient(150deg, var(--color-mauve-200), var(--color-mauve-500)); }
+
+      .letter-word {
+        font-family: var(--font-heading);
+        font-size: 0.57rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: rgba(232,221,212,0.3);
+        font-weight: 400;
+        text-align: center;
+      }
+
+      .letter-desc {
+        font-family: var(--font-display);
+        font-style: italic;
+        font-size: 0.8rem;
+        color: rgba(232,221,212,0.42);
+        text-align: center;
+        line-height: 1.55;
+        margin-top: 0.2rem;
+      }
+
+      /* ══════════════════════════════════════════
+         FEATURE CARDS — 붓 터치처럼 유기적
+      ══════════════════════════════════════════ */
+      .feature-card {
+        background: rgba(232,221,212,0.025);
+        border: 1px solid rgba(232,221,212,0.07);
+        backdrop-filter: blur(14px);
+        position: relative;
+        overflow: hidden;
+        transition:
+          border-color 0.45s ease,
+          transform    0.45s cubic-bezier(0.22,1,0.36,1),
+          box-shadow   0.45s ease;
+        cursor: default;
+      }
+
+      /* unique warm top edge per card */
+      .feature-card::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 1px;
+        opacity: 0;
+        transition: opacity 0.45s ease;
+      }
+
+      .fc-terra::before { background: linear-gradient(90deg, transparent, var(--color-terra-400), transparent); }
+      .fc-dusk::before  { background: linear-gradient(90deg, transparent, var(--color-dusk-300),  transparent); }
+      .fc-sage::before  { background: linear-gradient(90deg, transparent, var(--color-sage-400),  transparent); }
+
+      .fc-terra:hover { border-color:rgba(192,95,42,0.25);  box-shadow:0 24px 55px rgba(0,0,0,0.6), 0 0 40px rgba(192,95,42,0.06);  transform:translateY(-6px); }
+      .fc-dusk:hover  { border-color:rgba(240,173,74,0.25); box-shadow:0 24px 55px rgba(0,0,0,0.6), 0 0 40px rgba(240,173,74,0.06); transform:translateY(-6px); }
+      .fc-sage:hover  { border-color:rgba(118,160,110,0.25);box-shadow:0 24px 55px rgba(0,0,0,0.6), 0 0 40px rgba(118,160,110,0.06);transform:translateY(-6px); }
+
+      .feature-card:hover::before { opacity: 1; }
+
+      .feature-icon {
+        font-size: 1.7rem;
+        line-height: 1;
+        filter: saturate(0.55) brightness(0.85);
+        transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), filter 0.4s ease;
+      }
+      .feature-card:hover .feature-icon {
+        transform: scale(1.15) rotate(5deg);
+        filter: saturate(1.1) brightness(1.05);
+      }
+
+      .feature-title {
+        font-family: var(--font-display);
+        font-style: italic;
+        font-size: 1.15rem;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        color: #e8ddd4;
+      }
+
+      .feature-body {
+        font-family: var(--font-body);
+        font-size: 0.84rem;
+        line-height: 1.9;
+        color: rgba(232,221,212,0.42);
+        font-weight: 300;
+      }
+
+      /* ══════════════════════════════════════════
+         CTA BUTTON
+      ══════════════════════════════════════════ */
+      .cta-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.65rem;
+        padding: 0.82rem 2.3rem;
+        font-family: var(--font-heading);
+        font-size: 0.65rem;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        font-weight: 400;
+        color: #e8ddd4;
+        border: 1px solid rgba(192,95,42,0.25);
+        background: rgba(192,95,42,0.04);
+        cursor: pointer;
+        text-decoration: none;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.45s cubic-bezier(0.4,0,0.2,1);
+        border-radius: 1px;
+      }
+
+      .cta-btn::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(192,95,42,0.1),
+          rgba(240,173,74,0.06)
+        );
+        opacity: 0;
+        transition: opacity 0.45s ease;
+      }
+
+      .cta-btn:hover {
+        border-color: rgba(192,95,42,0.5);
+        color: #fff;
+        box-shadow: 0 0 32px rgba(192,95,42,0.15),
+                    inset 0 0 20px rgba(192,95,42,0.04);
+      }
+      .cta-btn:hover::before { opacity: 1; }
+
+      /* ══════════════════════════════════════════
+         TRAIT PILLS
+      ══════════════════════════════════════════ */
+      .traits-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.55rem;
+        justify-content: center;
+      }
+
+      .trait-pill {
+        font-family: var(--font-heading);
+        font-size: 0.62rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        font-weight: 400;
+        padding: 0.35rem 0.9rem;
+        border: 1px solid rgba(232,221,212,0.1);
+        color: rgba(232,221,212,0.35);
+        background: rgba(232,221,212,0.025);
+        border-radius: 999px;
+        transition: all 0.35s ease;
+        cursor: default;
+      }
+
+      .trait-pill:nth-child(4n+1):hover { border-color:rgba(192,95,42,0.5);  color:var(--color-terra-300); background:rgba(192,95,42,0.07);  transform:translateY(-2px); }
+      .trait-pill:nth-child(4n+2):hover { border-color:rgba(240,173,74,0.5); color:var(--color-dusk-300);  background:rgba(240,173,74,0.07); transform:translateY(-2px); }
+      .trait-pill:nth-child(4n+3):hover { border-color:rgba(118,160,110,0.5);color:var(--color-sage-300);  background:rgba(118,160,110,0.07);transform:translateY(-2px); }
+      .trait-pill:nth-child(4n):hover   { border-color:rgba(194,143,168,0.5);color:var(--color-mauve-300); background:rgba(194,143,168,0.07);transform:translateY(-2px); }
+
+      /* ══════════════════════════════════════════
+         QUOTE
+      ══════════════════════════════════════════ */
+      .art-quote {
+        font-family: var(--font-display);
+        font-style: italic;
+        font-size: clamp(1.1rem, 2.8vw, 1.6rem);
+        line-height: 1.9;
+        color: rgba(232,221,212,0.5);
+        position: relative;
+        padding: 0 2.5rem;
+      }
+
+      .art-quote::before,
+      .art-quote::after {
+        position: absolute;
+        font-family: var(--font-display);
+        font-size: 4rem;
+        line-height: 0;
+        opacity: 0.13;
+        color: var(--color-terra-400);
+      }
+      .art-quote::before { content: '"'; top: 0.45em;   left: 0; }
+      .art-quote::after  { content: '"'; bottom: -0.1em; right: 0; }
+
+      /* ══════════════════════════════════════════
+         CANVAS BOX — 아티스트의 작업실
+      ══════════════════════════════════════════ */
+      .canvas-box {
+        border: 1px solid rgba(192,95,42,0.12);
+        background: linear-gradient(
+          160deg,
+          rgba(192,95,42,0.04)  0%,
+          rgba(240,173,74,0.03) 40%,
+          rgba(118,160,110,0.03) 100%
+        );
+        backdrop-filter: blur(12px);
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* brush stroke decoration */
+      .canvas-box::after {
+        content: "✦";
+        position: absolute;
+        right: 1.5rem;
+        bottom: 0.5rem;
+        font-size: 9rem;
+        color: rgba(192,95,42,0.03);
+        line-height: 1;
+        pointer-events: none;
+        user-select: none;
+        transform: rotate(15deg);
+      }
+
+      /* ══════════════════════════════════════════
+         STATS
+      ══════════════════════════════════════════ */
+      .stat-num {
+        font-family: var(--font-display);
+        font-style: italic;
+        font-weight: 500;
+        font-size: clamp(2rem,5vw,3.2rem);
+        letter-spacing: 0.04em;
+        line-height: 1;
+        color: transparent;
+        -webkit-background-clip: text;
+        background-clip: text;
+      }
+
+      .stat-label {
+        font-family: var(--font-heading);
+        font-size: 0.57rem;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        color: rgba(232,221,212,0.25);
+        font-weight: 400;
+        margin-top: 0.35rem;
+      }
+
+      /* ══════════════════════════════════════════
+         DOMAIN BADGE
+      ══════════════════════════════════════════ */
+      .domain-badge {
+        font-family: var(--font-heading);
+        font-weight: 400;
+        font-size: 0.6rem;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: rgba(232,221,212,0.2);
+        border: 1px solid rgba(232,221,212,0.08);
+        padding: 0.35rem 0.85rem;
+        border-radius: 1px;
+      }
+
+      /* ══════════════════════════════════════════
+         FOOTER
+      ══════════════════════════════════════════ */
+      .site-footer {
+        border-top: 1px solid rgba(192,95,42,0.08);
+        padding: 2rem 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+        background: rgba(12,8,4,0.65);
+        backdrop-filter: blur(14px);
+      }
+
+      .footer-copy {
+        font-family: var(--font-heading);
+        font-size: 0.6rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: rgba(232,221,212,0.15);
+        font-weight: 400;
+      }
+
+      /* ══════════════════════════════════════════
+         FADE-UP & POP ANIMATIONS
+      ══════════════════════════════════════════ */
+      .fade-up {
+        opacity: 0;
+        transform: translateY(22px);
+        animation: fade-up-in 1.05s cubic-bezier(0.22,1,0.36,1) forwards;
+      }
+
+      @keyframes fade-up-in {
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .brush-in {
+        opacity: 0;
+        transform: translateY(12px) scaleX(0.96);
+        animation: brush-in-kf 1.1s cubic-bezier(0.22,1,0.36,1) forwards;
+      }
+
+      @keyframes brush-in-kf {
+        to { opacity: 1; transform: translateY(0) scaleX(1); }
+      }
+
+      .delay-1 { animation-delay: 0.1s;  }
+      .delay-2 { animation-delay: 0.25s; }
+      .delay-3 { animation-delay: 0.4s;  }
+      .delay-4 { animation-delay: 0.55s; }
+      .delay-5 { animation-delay: 0.72s; }
+      .delay-6 { animation-delay: 0.88s; }
+      .delay-7 { animation-delay: 1.05s; }
+
+      /* ══════════════════════════════════════════
+         SCROLL INDICATOR
+      ══════════════════════════════════════════ */
+      .scroll-indicator {
+        position: absolute;
+        bottom: 2.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.4rem;
+        animation: scroll-bob 3.2s ease-in-out infinite;
+      }
+
+      @keyframes scroll-bob {
+        0%, 100% { opacity: 0.2; transform: translateX(-50%) translateY(0);   }
+        50%       { opacity: 0.5; transform: translateX(-50%) translateY(7px); }
+      }
+
+      /* ══════════════════════════════════════════
+         GRID
+      ══════════════════════════════════════════ */
+      .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(260px,100%),1fr));
+        gap: 1.2rem;
+      }
+
+      /* ══════════════════════════════════════════
+         ORIGIN TEXT
+      ══════════════════════════════════════════ */
+      .origin-text {
+        font-family: var(--font-display);
+        font-style: italic;
+        font-size: clamp(1.05rem,2.6vw,1.4rem);
+        font-weight: 400;
+        line-height: 2.1;
+        color: rgba(232,221,212,0.45);
+      }
+
+      .origin-em-t { color: var(--color-terra-300); }
+      .origin-em-d { color: var(--color-dusk-300);  }
+      .origin-em-s { color: var(--color-sage-300);  }
+    </style>
+  </head>
+
+  <body>
+    <canvas id="art-canvas"></canvas>
+    <div class="dusk-layer"  aria-hidden="true"></div>
+    <div class="grain-layer" aria-hidden="true"></div>
+    <div class="vignette"    aria-hidden="true"></div>
+
+    <div class="site-wrapper">
+
+      <!-- ══════════════════════════════════════
+           HEADER
+      ══════════════════════════════════════ -->
+      <header class="glass-header relative z-10 flex items-center
+                     justify-between px-8 py-6">
+
+        <a href="/" class="logo-isfp select-none"
+           style="font-size:1.3rem; letter-spacing:0.12em;">ISFP</a>
+
+        <nav class="hidden sm:flex items-center gap-9" aria-label="Primary">
+          <a href="#letters"  class="nav-link">Letters</a>
+          <a href="#atelier"  class="nav-link">Atelier</a>
+          <a href="#contact"  class="nav-link">Contact</a>
+        </nav>
+
+        <div class="domain-badge hidden sm:block select-none">isfp.kr</div>
+      </header>
+
+      <!-- ══════════════════════════════════════
+           HERO
+      ══════════════════════════════════════ -->
+      <main>
+        <section class="hero-section">
+
+          <div class="hero-bg-text" aria-hidden="true">ISFP</div>
+          <div class="horizon-glow"  aria-hidden="true"></div>
+
+          <!-- Artist badge -->
+          <div class="artist-badge brush-in mb-6">
+            <span class="brush-icon">🎨</span>
+            <span style="font-family:var(--font-heading);font-size:0.6rem;
+                         letter-spacing:0.28em;text-transform:uppercase;
+                         color:rgba(232,221,212,0.6);font-weight:400;">
+              The Adventurer
+            </span>
+          </div>
+
+          <!-- Logo -->
+          <h1 class="logo-isfp brush-in delay-1 select-none">ISFP</h1>
+
+          <!-- Tagline -->
+          <p class="tagline fade-up delay-2 mt-6 max-w-lg">
+            손끝이 먼저 알고, 눈이 먼저 느낀다.<br />
+            <span style="font-size:0.88em; opacity:0.65;">
+              Introverted · Sensing · Feeling · Perceiving
+            </span>
+          </p>
+
+          <!-- vertical line -->
+          <div class="art-line-v h-14 mx-auto my-9 fade-up delay-3"
+               aria-hidden="true"></div>
+
+          <!-- Quote -->
+          <blockquote class="art-quote fade-up delay-4 max-w-2xl">
+            말하지 않아도 만든다.<br />
+            설명하지 않아도 느낀다.<br />
+            그것이 예술이고, 그것이 나다.
+          </blockquote>
+
+          <!-- Trait pills -->
+          <div class="traits-wrap fade-up delay-5 mt-9 max-w-lg">
+            <span class="trait-pill">감각</span>
+            <span class="trait-pill">자유</span>
+            <span class="trait-pill">예술</span>
+            <span class="trait-pill">현재</span>
+            <span class="trait-pill">진정성</span>
+            <span class="trait-pill">탐험</span>
+            <span class="trait-pill">조용한 반항아</span>
+            <span class="trait-pill">창조</span>
+          </div>
+
+          <!-- CTA -->
+          <div class="mt-11 fade-up delay-6">
+            <a href="#letters" class="cta-btn">
+              <span>작업실로 들어가기</span>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                   aria-hidden="true">
+                <path d="M7 1v12M7 13l-4-4M7 13l4-4"
+                      stroke="currentColor" stroke-width="1"
+                      stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
+
+          <!-- Scroll indicator -->
+          <div class="scroll-indicator" aria-hidden="true">
+            <span style="font-family:var(--font-heading);font-weight:400;
+                         font-size:0.52rem;letter-spacing:0.32em;
+                         text-transform:uppercase;
+                         color:rgba(192,95,42,0.25);">scroll</span>
+            <svg width="1" height="28" viewBox="0 0 1 28">
+              <line x1="0.5" y1="0" x2="0.5" y2="28"
+                    stroke="rgba(192,95,42,0.2)" stroke-width="1"/>
+            </svg>
+          </div>
+        </section>
+
+        <hr class="art-line-h" />
+
+        <!-- ══════════════════════════════════════
+             STATS ROW
+        ══════════════════════════════════════ -->
+        <section class="px-8 py-14 max-w-4xl mx-auto">
+          <div class="grid grid-cols-3 gap-6">
+            <div class="flex flex-col items-center gap-1">
+              <span class="stat-num"
+                style="background:linear-gradient(150deg,var(--color-terra-200),var(--color-terra-500));
+                       -webkit-background-clip:text;background-clip:text;">
+                5–9%
+              </span>
+              <span class="stat-label">of population</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+              <span class="stat-num"
+                style="background:linear-gradient(150deg,var(--color-dusk-300),var(--color-dusk-500));
+                       -webkit-background-clip:text;background-clip:text;">
+                NOW
+              </span>
+              <span class="stat-label">lives here</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+              <span class="stat-num"
+                style="background:linear-gradient(150deg,var(--color-sage-200),var(--color-sage-500));
+                       -webkit-background-clip:text;background-clip:text;">
+                ∞
+              </span>
+              <span class="stat-label">expressions</span>
+            </div>
+          </div>
+        </section>
+
+        <hr class="art-line-h" />
+
+        <!-- ══════════════════════════════════════
+             LETTERS — I · S · F · P
+        ══════════════════════════════════════ -->
+        <section id="letters" class="px-6 py-20 max-w-5xl mx-auto">
+          <div class="mb-12 text-center">
+            <p class="section-label mb-3">네 글자의 감각</p>
+            <h2 style="font-family:var(--font-display);font-style:italic;
+                       font-weight:500;font-size:clamp(1.7rem,4vw,2.7rem);
+                       letter-spacing:0.06em;color:#e8ddd4;">
+              I · S · F · P
+            </h2>
+          </div>
+
+          <div class="flex flex-wrap gap-3 justify-center">
+
+            <!-- I -->
+            <div class="letter-block lb-i">
+              <span class="letter-big l-i">I</span>
+              <span class="letter-word">Introverted</span>
+              <span class="letter-desc">혼자일 때<br />가장 깊어진다</span>
+            </div>
+
+            <!-- S -->
+            <div class="letter-block lb-s">
+              <span class="letter-big l-s">S</span>
+              <span class="letter-word">Sensing</span>
+              <span class="letter-desc">오감으로<br />세상을 받아들인다</span>
+            </div>
+
+            <!-- F -->
+            <div class="letter-block lb-f">
+              <span class="letter-big l-f">F</span>
+              <span class="letter-word">Feeling</span>
+              <span class="letter-desc">가치로<br />판단한다</span>
+            </div>
+
+            <!-- P -->
+            <div class="letter-block lb-p">
+              <span class="letter-big l-p">P</span>
+              <span class="letter-word">Perceiving</span>
+              <span class="letter-desc">흐름에 열려<br />순간을 산다</span>
+            </div>
+
+          </div>
+        </section>
+
+        <hr class="art-line-h" />
+
+        <!-- ══════════════════════════════════════
+             ATELIER — 3 feature cards
+        ══════════════════════════════════════ -->
+        <section id="atelier" class="px-8 py-20 max-w-5xl mx-auto">
+          <div class="mb-14 text-center">
+            <p class="section-label mb-3">세 개의 작업실</p>
+            <h2 style="font-family:var(--font-display);font-style:italic;
+                       font-weight:500;font-size:clamp(1.7rem,4vw,2.7rem);
+                       letter-spacing:0.06em;color:#e8ddd4;">
+              ISFP의 세계
+            </h2>
+          </div>
+
+          <div class="cards-grid">
+
+            <!-- 감각 -->
+            <div class="feature-card fc-terra p-8">
+              <div class="feature-icon mb-5">🖌️</div>
+              <h3 class="feature-title mb-3">감각 (Sensation)</h3>
+              <p class="feature-body">
+                색의 온도, 천의 질감, 빛의 각도 — ISFP는 세상을
+                온몸으로 받아들인다. 추상적인 개념보다 눈앞의
+                아름다움이 진실이다. 손끝에서 시작하는 예술.
+              </p>
+            </div>
+
+            <!-- 자유 -->
+            <div class="feature-card fc-dusk p-8">
+              <div class="feature-icon mb-5">🌅</div>
+              <h3 class="feature-title mb-3">자유 (Freedom)</h3>
+              <p class="feature-body">
+                계획 없이 떠나는 것을 두려워하지 않는다.
+                정해진 틀 안에 있으면 질식한다. ISFP는
+                조용한 반항아 — 규칙보다 자신의 진심을 따른다.
+              </p>
+            </div>
+
+            <!-- 공감 -->
+            <div class="feature-card fc-sage p-8">
+              <div class="feature-icon mb-5">🌿</div>
+              <h3 class="feature-title mb-3">공감 (Empathy)</h3>
+              <p class="feature-body">
+                말보다 행동으로 사랑을 표현한다.
+                작은 것들을 기억하고, 조용히 곁에 있어준다.
+                깊지만 드러내지 않는, ISFP만의 따뜻함.
+              </p>
+            </div>
+
+          </div>
+        </section>
+
+        <hr class="art-line-h" />
+
+        <!-- ══════════════════════════════════════
+             CANVAS BOX
+        ══════════════════════════════════════ -->
+        <section class="px-8 py-16 max-w-3xl mx-auto">
+          <div class="canvas-box p-12">
+            <p class="section-label mb-6">from the studio</p>
+            <p class="origin-text text-center">
+              ISFP는 모든 유형 중 가장 강한
+              <span class="origin-em-t">미적 감수성</span>을 가진다.<br />
+              보는 것, 만지는 것, 느끼는 것 —<br />
+              <span class="origin-em-d">오감이 언어</span>다.<br />
+              <br />
+              설명하지 않아도 된다.<br />
+              그냥 <span class="origin-em-s">만들면 된다.</span>
+            </p>
+            <div class="art-line-v h-12 mx-auto mt-10"
+                 aria-hidden="true"></div>
+          </div>
+        </section>
+
+        <hr class="art-line-h" />
+
+        <!-- ══════════════════════════════════════
+             CONTACT
+        ══════════════════════════════════════ -->
+        <section id="contact" class="px-8 py-20 max-w-xl mx-auto text-center">
+          <p class="section-label mb-5">contact</p>
+          <h2 style="font-family:var(--font-display);font-style:italic;
+                     font-weight:500;font-size:clamp(1.6rem,3.5vw,2.3rem);
+                     letter-spacing:0.05em;color:#e8ddd4;">
+            연결하기
+          </h2>
+          <p class="mt-5 mb-10"
+             style="font-family:var(--font-display);font-style:italic;
+                    font-size:0.92rem;line-height:2;
+                    color:rgba(232,221,212,0.35);">
+            말보다 작품으로, 이론보다 감각으로.
+          </p>
+          <a href="mailto:hello@isfp.kr" class="cta-btn">
+            hello@isfp.kr
+          </a>
+        </section>
+
+      </main>
+
+      <!-- ══════════════════════════════════════
+           FOOTER
+      ══════════════════════════════════════ -->
+      <footer class="site-footer">
+        <span class="footer-copy">© 2026 isfp.kr — All rights reserved.</span>
+        <span class="footer-copy" style="opacity:0.55;">
+          feel first · create always · stay free.
+        </span>
+      </footer>
+
+    </div>
+
+    <!-- ══════════════════════════════════════
+         ART PARTICLE SCRIPT
+         — dust motes, pigment drops, light shards
+    ══════════════════════════════════════ -->
+    <script>
+    (() => {
+      const canvas = document.getElementById('art-canvas');
+      const ctx    = canvas.getContext('2d');
+
+      let W, H;
+      const MOTES   = [];   // 먼지 부유 입자 — 작업실 빛 속 먼지
+      const DROPS   = [];   // 물감 방울 — 아래로 천천히 떨어지는
+      const SHARDS  = [];   // 빛 파편 — 반짝이는 조각
+
+      const M_COUNT = 55;
+      const D_COUNT = 28;
+      const S_COUNT = 35;
+
+      function resize() {
+        W = canvas.width  = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', () => { resize(); init(); });
+
+      /* ── Dust mote — 공중 부유 먼지 ── */
+      class DustMote {
+        constructor() { this.reset(false); }
+        reset(fresh = false) {
+          this.x    = Math.random() * W;
+          this.y    = fresh
+            ? (Math.random() > 0.5 ? -8 : H + 8)
+            : Math.random() * H;
+          this.r    = Math.random() * 1.3 + 0.3;
+          // 매우 느리고 무작위한 움직임
+          this.vx   = (Math.random() - 0.5) * 0.22;
+          this.vy   = (Math.random() - 0.5) * 0.18;
+          this.life = 0;
+          this.maxL = Math.random() * 350 + 200;
+          // 따뜻한 대지색 팔레트
+          const t   = Math.random();
+          if      (t < 0.35) this.col = `224,187,160`;   // warm ivory
+          else if (t < 0.62) this.col = `192,95,42`;     // terracotta
+          else if (t < 0.82) this.col = `240,173,74`;    // dusk gold
+          else               this.col = `163,192,156`;   // sage
+        }
+        step() {
+          this.x   += this.vx + Math.sin(this.life * 0.025 + this.y * 0.01) * 0.18;
+          this.y   += this.vy + Math.cos(this.life * 0.02  + this.x * 0.01) * 0.1;
+          this.life++;
+          if (this.life > this.maxL) this.reset(true);
+        }
+        draw() {
+          const a = Math.sin((this.life / this.maxL) * Math.PI) * 0.45;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${this.col},${a.toFixed(3)})`;
+          ctx.fill();
+        }
+      }
+
+      /* ── Pigment drop — 물감 한 방울 ── */
+      class PigmentDrop {
+        constructor() { this.reset(false); }
+        reset(fresh = false) {
+          this.x     = Math.random() * W;
+          this.y     = fresh ? -10 : Math.random() * H;
+          this.rx    = Math.random() * 3 + 1.2;   // x반지름 (찌그러진 타원)
+          this.ry    = this.rx * (Math.random() * 0.6 + 0.8);
+          this.angle = Math.random() * Math.PI;
+          this.va    = (Math.random() - 0.5) * 0.008;
+          this.vx    = (Math.random() - 0.5) * 0.28;
+          this.vy    = Math.random() * 0.5 + 0.18;  // 아래로 떨어짐
+          this.life  = 0;
+          this.maxL  = Math.random() * 300 + 180;
+          const t    = Math.random();
+          if      (t < 0.3)  this.col = `192,95,42`;    // terra
+          else if (t < 0.55) this.col = `224,120,68`;   // coral-terra
+          else if (t < 0.75) this.col = `240,173,74`;   // dusk
+          else if (t < 0.9)  this.col = `118,160,110`;  // sage
+          else               this.col = `194,143,168`;  // mauve
+        }
+        step() {
+          this.x     += this.vx + Math.sin(this.life * 0.035) * 0.22;
+          this.y     += this.vy;
+          this.angle += this.va;
+          this.life++;
+          if (this.y > H + 15 || this.life > this.maxL) this.reset(true);
+        }
+        draw() {
+          const a = Math.sin((this.life / this.maxL) * Math.PI) * 0.55;
+          ctx.save();
+          ctx.translate(this.x, this.y);
+          ctx.rotate(this.angle);
+          ctx.beginPath();
+          ctx.ellipse(0, 0, this.rx, this.ry, 0, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${this.col},${a.toFixed(3)})`;
+          ctx.fill();
+          ctx.restore();
+        }
+      }
+
+      /* ── Light shard — 빛 파편 ── */
+      class LightShard {
+        constructor() { this.reset(false); }
+        reset(fresh = false) {
+          this.x     = Math.random() * W;
+          this.y     = fresh ? -5 : Math.random() * H;
+          this.size  = Math.random() * 4.5 + 1.5;
+          this.angle = Math.random() * Math.PI * 2;
+          this.va    = (Math.random() - 0.5) * 0.022;
+          this.vx    = (Math.random() - 0.5) * 0.2;
+          this.vy    = Math.random() * 0.38 + 0.12;
+          this.life  = 0;
+          this.maxL  = Math.random() * 280 + 150;
+          this.col   = Math.random() < 0.6
+            ? `249,201,122`    // warm gold spark
+            : `232,187,160`;   // ivory light
+        }
+        step() {
+          this.x     += this.vx;
+          this.y     += this.vy;
+          this.angle += this.va;
+          this.life++;
+          if (this.y > H + 10 || this.life > this.maxL) this.reset(true);
+        }
+        /* 마름모 형태 — 빛의 파편 */
+        draw() {
+          const a = Math.sin((this.life / this.maxL) * Math.PI) * 0.55;
+          ctx.save();
+          ctx.translate(this.x, this.y);
+          ctx.rotate(this.angle);
+          ctx.beginPath();
+          ctx.moveTo(0, -this.size);
+          ctx.lineTo(this.size * 0.45,  0);
+          ctx.lineTo(0,  this.size);
+          ctx.lineTo(-this.size * 0.45, 0);
+          ctx.closePath();
+          ctx.fillStyle = `rgba(${this.col},${a.toFixed(3)})`;
+          ctx.fill();
+          ctx.restore();
+        }
+      }
+
+      function init() {
+        MOTES.length  = 0;
+        DROPS.length  = 0;
+        SHARDS.length = 0;
+        for (let i = 0; i < M_COUNT; i++) MOTES.push(new DustMote());
+        for (let i = 0; i < D_COUNT; i++) DROPS.push(new PigmentDrop());
+        for (let i = 0; i < S_COUNT; i++) SHARDS.push(new LightShard());
+      }
+
+      function loop() {
+        ctx.clearRect(0, 0, W, H);
+        MOTES.forEach(m  => { m.step(); m.draw(); });
+        DROPS.forEach(d  => { d.step(); d.draw(); });
+        SHARDS.forEach(s => { s.step(); s.draw(); });
+        requestAnimationFrame(loop);
+      }
+
+      init();
+      loop();
+    })();
+    </script>
+
+  </body>
+</html>
