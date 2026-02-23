@@ -1,0 +1,1167 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ISFP — isfp.kr</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style type="text/tailwindcss">
+    @theme {
+      --color-canvas-50:  #fdf8f0;
+      --color-canvas-100: #faefd9;
+      --color-canvas-200: #f3ddb0;
+      --color-canvas-300: #e8c47e;
+      --color-canvas-400: #dda855;
+      --color-canvas-500: #c8883a;
+      --color-canvas-600: #a8682c;
+      --color-canvas-700: #855020;
+      --color-canvas-800: #5c3617;
+      --color-canvas-900: #3a2210;
+      --color-canvas-950: #1e120a;
+      --color-terra-400:  #c17b5a;
+      --color-terra-500:  #a85f3d;
+      --color-terra-600:  #8b4a2c;
+      --color-sage-300:   #b5c9a8;
+      --color-sage-400:   #8aab7a;
+      --color-sage-500:   #6a8f5a;
+      --color-dusk-400:   #d4956a;
+      --color-dusk-500:   #be7a4f;
+      --color-studio-900: #16100c;
+      --color-studio-950: #0d0a07;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --font-serif: 'Noto Serif KR', Georgia, serif;
+    }
+  </style>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: #0d0a07;
+      color: #e8c47e;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* ── Warm atelier aurora ── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 70% 45% at 20% 15%, rgba(200,136,58,.07) 0%, transparent 60%),
+        radial-gradient(ellipse 55% 38% at 82% 78%, rgba(193,123,90,.06) 0%, transparent 55%),
+        radial-gradient(ellipse 45% 32% at 50% 50%, rgba(138,171,122,.04) 0%, transparent 58%),
+        radial-gradient(ellipse 38% 28% at 75% 20%, rgba(212,149,106,.04) 0%, transparent 50%);
+    }
+
+    /* ── Canvas grain (like linen texture) ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.032'/%3E%3C/svg%3E");
+      background-size: 160px 160px;
+    }
+
+    /* ── Shimmer: warm canvas → cream → terracotta → gold ── */
+    @keyframes shimmer-isfp {
+      0%   { background-position: -700px 0; }
+      100% { background-position:  700px 0; }
+    }
+    .shimmer-text {
+      background: linear-gradient(90deg,
+        #c8883a 0%,
+        #fdf8f0 32%,
+        #c17b5a 52%,
+        #e8c47e 72%,
+        #a85f3d 100%
+      );
+      background-size: 1400px auto;
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      animation: shimmer-isfp 7s ease-in-out infinite;
+    }
+
+    /* ── Watercolor bleed ── */
+    @keyframes bleed {
+      0%   { transform: scale(1)    rotate(0deg);   opacity: 0; }
+      12%  { opacity: .55; }
+      85%  { opacity: .2; }
+      100% { transform: scale(1.3)  rotate(25deg);  opacity: 0; }
+    }
+    @keyframes pigment-drift {
+      0%   { transform: translateY(-18px) translateX(0) rotate(0deg);   opacity: 0; }
+      14%  { opacity: .5; }
+      88%  { opacity: .18; }
+      100% { transform: translateY(100px) translateX(12px) rotate(45deg); opacity: 0; }
+    }
+    @keyframes brush-float {
+      0%, 100% { transform: translateY(0) rotate(-3deg);  opacity: .3; }
+      50%       { transform: translateY(-55px) rotate(3deg); opacity: .6; }
+    }
+
+    /* ── Gentle breath ── */
+    @keyframes warm-breath {
+      0%, 100% { opacity: .35; transform: scale(1); }
+      50%       { opacity: .62; transform: scale(1.07); }
+    }
+
+    /* ── Reveal ── */
+    @keyframes reveal-up {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal { opacity: 0; }
+    .reveal.in { animation: reveal-up .58s ease forwards; }
+
+    /* ── Card ── */
+    .isfp-card {
+      background: linear-gradient(135deg,
+        rgba(30,18,10,.72),
+        rgba(13,10,7,.92)
+      );
+      border: 1px solid rgba(232,196,126,.09);
+      backdrop-filter: blur(14px);
+      transition: transform .32s ease, border-color .32s ease, box-shadow .32s ease;
+    }
+    .isfp-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(232,196,126,.2);
+      box-shadow: 0 16px 48px rgba(0,0,0,.55), 0 0 0 1px rgba(200,136,58,.05);
+    }
+
+    /* ── Link button ── */
+    .link-btn {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      width: 100%;
+      padding: .875rem 1.25rem;
+      border-radius: .75rem;
+      font-size: .9375rem;
+      font-weight: 500;
+      text-decoration: none;
+      color: #e8c47e;
+      background: linear-gradient(135deg, rgba(30,18,10,.72), rgba(13,10,7,.92));
+      border: 1px solid rgba(232,196,126,.09);
+      transition: all .25s ease;
+    }
+    .link-btn:hover {
+      color: #fdf8f0;
+      border-color: rgba(232,196,126,.25);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(0,0,0,.45), 0 0 16px rgba(200,136,58,.07);
+    }
+    .link-btn.terra-btn {
+      border-color: rgba(193,123,90,.22);
+      background: linear-gradient(135deg, rgba(133,80,32,.18), rgba(13,10,7,.92));
+    }
+    .link-btn.terra-btn:hover {
+      border-color: rgba(193,123,90,.45);
+      box-shadow: 0 8px 28px rgba(0,0,0,.45), 0 0 20px rgba(193,123,90,.13);
+    }
+
+    /* ── Icon badge ── */
+    .icon-badge {
+      width: 2rem; height: 2rem;
+      border-radius: .5rem;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* ── Carousel ── */
+    .carousel-track {
+      display: flex;
+      transition: transform .42s cubic-bezier(.25,.46,.45,.94);
+    }
+    .carousel-slide { min-width: 100%; }
+
+    /* ── YouTube ── */
+    .yt-wrap {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0; overflow: hidden;
+    }
+    .yt-wrap iframe {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      border: none;
+    }
+
+    /* ── Vinyl spin ── */
+    @keyframes spin-slow { to { transform: rotate(360deg); } }
+    .vinyl-spin { animation: spin-slow 5.5s linear infinite; }
+
+    /* ── Tag ── */
+    .tag {
+      display: inline-flex; align-items: center;
+      padding: .2rem .65rem;
+      border-radius: 9999px;
+      font-size: .7rem;
+      font-weight: 500;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      background: rgba(232,196,126,.07);
+      border: 1px solid rgba(232,196,126,.13);
+      color: #c8883a;
+    }
+
+    /* ── Atelier tag ── */
+    .atelier-tag {
+      display: inline-flex; align-items: center; gap: .3rem;
+      padding: .28rem .75rem;
+      border-radius: 9999px;
+      font-size: .78rem;
+      background: rgba(200,136,58,.08);
+      border: 1px solid rgba(200,136,58,.15);
+      color: #dda855;
+      transition: all .2s;
+    }
+
+    /* ── Divider ── */
+    .isfp-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(232,196,126,.14), transparent);
+      border: none;
+    }
+
+    /* ── Sense meter ── */
+    @keyframes sense-fill {
+      from { width: 0; }
+      to   { width: var(--w); }
+    }
+    .sense-bar {
+      height: 3px;
+      border-radius: 9999px;
+      animation: sense-fill 1.6s ease forwards;
+      animation-play-state: paused;
+    }
+    .sense-bar.run { animation-play-state: running; }
+
+    /* ── Paint stroke deco ── */
+    .paint-stroke {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(18px);
+      pointer-events: none;
+      opacity: .06;
+    }
+
+    /* ── Accordion ── */
+    details > summary { list-style: none; cursor: pointer; user-select: none; }
+    details > summary::-webkit-details-marker { display: none; }
+    details[open] .chev { transform: rotate(180deg); }
+    .chev { transition: transform .22s ease; display: inline-block; }
+
+    /* ── Progress ── */
+    .progress-bar { width: 30%; }
+    @keyframes progress-move {
+      0%   { width: 30%; }
+      100% { width: 78%; }
+    }
+    .progress-bar.playing { animation: progress-move 290s linear forwards; }
+
+    /* ── Color swatch ── */
+    .swatch {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(232,196,126,.2);
+      display: inline-block;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .swatch:hover {
+      transform: scale(1.2);
+      box-shadow: 0 0 10px rgba(232,196,126,.25);
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: #0d0a07; }
+    ::-webkit-scrollbar-thumb { background: #3a2210; border-radius: 3px; }
+  </style>
+</head>
+
+<body>
+
+  <!-- ░░ PARTICLE LAYER ░░ -->
+  <div id="ptcl" style="position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;"></div>
+
+  <!-- ░░ CORNER DECO: paintbrush stroke ░░ -->
+  <div style="position:fixed;top:0;right:0;width:220px;height:220px;opacity:.055;pointer-events:none;z-index:0;overflow:hidden;">
+    <svg viewBox="0 0 220 220" fill="none">
+      <path d="M 20 200 Q 60 40 200 20" stroke="#c8883a" stroke-width="1.2" fill="none"/>
+      <path d="M 10 180 Q 80 60 210 10" stroke="#a85f3d" stroke-width=".7" fill="none"/>
+      <path d="M 40 210 Q 100 80 210 40" stroke="#e8c47e" stroke-width=".5" fill="none"/>
+      <circle cx="200" cy="20" r="4" fill="#c8883a" opacity=".8"/>
+      <circle cx="210" cy="10" r="2.5" fill="#a85f3d" opacity=".6"/>
+    </svg>
+  </div>
+  <div style="position:fixed;bottom:0;left:0;width:160px;height:160px;opacity:.04;pointer-events:none;z-index:0;overflow:hidden;">
+    <svg viewBox="0 0 160 160" fill="none">
+      <path d="M 0 140 Q 40 60 150 0" stroke="#8aab7a" stroke-width="1" fill="none"/>
+      <path d="M 0 160 Q 60 80 160 20" stroke="#6a8f5a" stroke-width=".6" fill="none"/>
+    </svg>
+  </div>
+
+  <!-- ░░ MAIN ░░ -->
+  <main style="position:relative;z-index:1;max-width:480px;margin:0 auto;padding:3rem 1rem 6rem;">
+
+    <!-- ═══════════ HERO ═══════════ -->
+    <header class="reveal" style="text-align:center;margin-bottom:2.5rem;">
+
+      <!-- avatar -->
+      <div style="position:relative;display:inline-block;margin-bottom:1.4rem;">
+        <div style="position:absolute;inset:-14px;border-radius:50%;background:radial-gradient(circle,rgba(200,136,58,.2),transparent 70%);animation:warm-breath 5s ease-in-out infinite;pointer-events:none;"></div>
+        <div style="width:96px;height:96px;border-radius:50%;overflow:hidden;border:1.5px solid rgba(232,196,126,.25);margin:0 auto;position:relative;background:linear-gradient(135deg,#1e120a,#0d0a07);">
+          <img src="https://api.dicebear.com/9.x/shapes/svg?seed=isfp&backgroundColor=16100c&color=c8883a,a85f3d&shape0=ellipse&shape1=polygon"
+               alt="ISFP"
+               style="width:100%;height:100%;object-fit:cover;"
+               onerror="this.style.display='none'" />
+        </div>
+        <!-- status dot: warm sage -->
+        <span style="position:absolute;bottom:4px;right:4px;width:14px;height:14px;background:#8aab7a;border-radius:50%;border:2.5px solid #0d0a07;display:block;box-shadow:0 0 7px rgba(138,171,122,.6);"></span>
+      </div>
+
+      <!-- name -->
+      <h1 class="shimmer-text" style="font-family:'Noto Serif KR',serif;font-size:2.2rem;font-weight:700;letter-spacing:.12em;margin-bottom:.3rem;">ISFP</h1>
+      <p style="color:#5c3617;font-size:.75rem;letter-spacing:.28em;text-transform:uppercase;margin-bottom:.45rem;">isfp.kr</p>
+      <p style="color:#a85f3d;font-size:.8rem;letter-spacing:.06em;margin-bottom:.75rem;font-weight:300;">🎨 The Adventurer</p>
+
+      <!-- hero quote -->
+      <p style="color:#855020;font-size:.82rem;font-style:italic;margin-bottom:1rem;line-height:1.75;max-width:295px;margin-left:auto;margin-right:auto;">
+        "말하지 않아도 만든다.<br/>
+        <span style="color:#a85f3d;">설명하지 않아도 느낀다.<br/>
+        그것이 예술이고, 그것이 나다."</span>
+      </p>
+
+      <!-- atelier tags -->
+      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:.4rem;margin-bottom:1.4rem;">
+        <span class="atelier-tag">🖌️ 감각</span>
+        <span class="atelier-tag">🌅 자유</span>
+        <span class="atelier-tag">🌿 공감</span>
+        <span class="atelier-tag">🎨 예술</span>
+        <span class="atelier-tag">⚡ 현재</span>
+      </div>
+
+      <!-- I · S · F · P stats bar -->
+      <div style="display:flex;justify-content:center;align-items:stretch;gap:0;border:1px solid rgba(232,196,126,.1);border-radius:.875rem;overflow:hidden;background:rgba(30,18,10,.5);">
+        <div style="flex:1;padding:.8rem .5rem;text-align:center;border-right:1px solid rgba(232,196,126,.08);">
+          <p style="color:#e8c47e;font-weight:700;font-size:1.2rem;font-family:'Noto Serif KR',serif;line-height:1;">I</p>
+          <p style="color:#5c3617;font-size:.6rem;letter-spacing:.06em;text-transform:uppercase;margin-top:.2rem;">Intro</p>
+        </div>
+        <div style="flex:1;padding:.8rem .5rem;text-align:center;border-right:1px solid rgba(232,196,126,.08);">
+          <p style="color:#e8c47e;font-weight:700;font-size:1.2rem;font-family:'Noto Serif KR',serif;line-height:1;">S</p>
+          <p style="color:#5c3617;font-size:.6rem;letter-spacing:.06em;text-transform:uppercase;margin-top:.2rem;">Sensing</p>
+        </div>
+        <div style="flex:1;padding:.8rem .5rem;text-align:center;border-right:1px solid rgba(232,196,126,.08);">
+          <p style="color:#e8c47e;font-weight:700;font-size:1.2rem;font-family:'Noto Serif KR',serif;line-height:1;">F</p>
+          <p style="color:#5c3617;font-size:.6rem;letter-spacing:.06em;text-transform:uppercase;margin-top:.2rem;">Feeling</p>
+        </div>
+        <div style="flex:1;padding:.8rem .5rem;text-align:center;">
+          <p style="color:#e8c47e;font-weight:700;font-size:1.2rem;font-family:'Noto Serif KR',serif;line-height:1;">P</p>
+          <p style="color:#5c3617;font-size:.6rem;letter-spacing:.06em;text-transform:uppercase;margin-top:.2rem;">Perceive</p>
+        </div>
+      </div>
+    </header>
+
+    <hr class="isfp-divider" style="margin-bottom:2rem;" />
+
+    <!-- ═══════════ ANNOUNCEMENT ═══════════ -->
+    <div class="reveal isfp-card" style="border-radius:.875rem;padding:1rem 1.125rem;margin-bottom:1.75rem;border-left:2.5px solid rgba(193,123,90,.5);display:flex;gap:.75rem;align-items:flex-start;">
+      <span style="font-size:1.3rem;flex-shrink:0;margin-top:1px;">🖌️</span>
+      <div>
+        <p style="color:#e8c47e;font-size:.875rem;font-weight:600;margin-bottom:.2rem;">New Work: 작업실 시리즈 Vol.5 공개</p>
+        <p style="color:#855020;font-size:.78rem;line-height:1.65;">손끝이 먼저 알고, 눈이 먼저 느끼는 새 작업물이 열렸습니다.</p>
+        <a href="#" style="color:#c8883a;font-size:.78rem;font-weight:500;text-decoration:none;display:inline-block;margin-top:.35rem;transition:color .2s;"
+           onmouseover="this.style.color='#e8c47e'" onmouseout="this.style.color='#c8883a'">작업실 들어가기 →</a>
+      </div>
+    </div>
+
+    <!-- ═══════════ SOCIAL LINKS ═══════════ -->
+    <section class="reveal" style="margin-bottom:2rem;">
+      <p style="color:#5c3617;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.75rem;font-weight:500;">소셜 채널</p>
+
+      <a href="#" class="link-btn" style="margin-bottom:.625rem;">
+        <span class="icon-badge" style="background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);">
+          <svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </span>
+        <span style="flex:1;">Instagram</span>
+        <span style="color:#5c3617;font-size:.78rem;">@isfp.kr</span>
+        <svg width="14" height="14" fill="none" stroke="#3a2210" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+      </a>
+
+      <a href="#" class="link-btn terra-btn" style="margin-bottom:.625rem;">
+        <span class="icon-badge" style="background:#dc2626;">
+          <svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </span>
+        <span style="flex:1;">YouTube</span>
+        <span style="color:#5c3617;font-size:.78rem;">ISFP Channel</span>
+        <svg width="14" height="14" fill="none" stroke="#3a2210" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+      </a>
+
+      <a href="#" class="link-btn" style="margin-bottom:.625rem;">
+        <span class="icon-badge" style="background:#0d0a07;border:1px solid #3a2210;">
+          <svg width="14" height="14" fill="#e8c47e" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </span>
+        <span style="flex:1;">X (Twitter)</span>
+        <span style="color:#5c3617;font-size:.78rem;">@isfp_kr</span>
+        <svg width="14" height="14" fill="none" stroke="#3a2210" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+      </a>
+
+      <a href="#" class="link-btn" style="margin-bottom:.625rem;">
+        <span class="icon-badge" style="background:#0d0a07;border:1px solid #3a2210;">
+          <svg width="16" height="16" fill="#e8c47e" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        </span>
+        <span style="flex:1;">GitHub</span>
+        <span style="color:#5c3617;font-size:.78rem;">isfp-kr</span>
+        <svg width="14" height="14" fill="none" stroke="#3a2210" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+      </a>
+
+      <a href="mailto:hello@isfp.kr" class="link-btn">
+        <span class="icon-badge" style="background:#3a2210;">
+          <svg width="16" height="16" fill="none" stroke="#c8883a" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        </span>
+        <span style="flex:1;">이메일</span>
+        <span style="color:#5c3617;font-size:.78rem;">hello@isfp.kr</span>
+        <svg width="14" height="14" fill="none" stroke="#3a2210" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+      </a>
+    </section>
+
+    <hr class="isfp-divider" style="margin-bottom:2rem;" />
+
+    <!-- ═══════════ ISFP 전용: 세 개의 작업실 ═══════════ -->
+    <section class="reveal" style="margin-bottom:2rem;">
+      <p style="color:#5c3617;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.75rem;font-weight:500;">세 개의 작업실</p>
+      <div style="display:flex;flex-direction:column;gap:.625rem;">
+
+        <!-- 감각 -->
+        <div class="isfp-card" style="border-radius:.875rem;padding:1rem 1.125rem;display:flex;gap:.875rem;align-items:flex-start;">
+          <div style="width:40px;height:40px;flex-shrink:0;border-radius:.625rem;background:rgba(200,136,58,.1);border:1px solid rgba(200,136,58,.22);display:flex;align-items:center;justify-content:center;font-size:1.2rem;">🖌️</div>
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.3rem;">
+              <p style="color:#e8c47e;font-size:.875rem;font-weight:600;">감각 (Sensation)</p>
+              <span class="tag">01</span>
+            </div>
+            <p style="color:#855020;font-size:.78rem;line-height:1.65;">색의 온도, 천의 질감, 빛의 각도 — ISFP는 세상을 온몸으로 받아들인다. 손끝에서 시작하는 예술.</p>
+            <div style="margin-top:.65rem;background:#16100c;border-radius:9999px;height:3px;overflow:hidden;">
+              <div class="sense-bar run" style="--w:95%;background:linear-gradient(90deg,#c8883a,#e8c47e);"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 자유 -->
+        <div class="isfp-card" style="border-radius:.875rem;padding:1rem 1.125rem;display:flex;gap:.875rem;align-items:flex-start;">
+          <div style="width:40px;height:40px;flex-shrink:0;border-radius:.625rem;background:rgba(138,171,122,.08);border:1px solid rgba(138,171,122,.17);display:flex;align-items:center;justify-content:center;font-size:1.2rem;">🌅</div>
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.3rem;">
+              <p style="color:#e8c47e;font-size:.875rem;font-weight:600;">자유 (Freedom)</p>
+              <span class="tag">02</span>
+            </div>
+            <p style="color:#855020;font-size:.78rem;line-height:1.65;">계획 없이 떠나는 것을 두려워하지 않는다. ISFP는 조용한 반항아 — 규칙보다 자신의 진심을 따른다.</p>
+            <div style="margin-top:.65rem;background:#16100c;border-radius:9999px;height:3px;overflow:hidden;">
+              <div class="sense-bar run" style="--w:88%;animation-delay:.2s;background:linear-gradient(90deg,#6a8f5a,#b5c9a8);"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 공감 -->
+        <div class="isfp-card" style="border-radius:.875rem;padding:1rem 1.125rem;display:flex;gap:.875rem;align-items:flex-start;">
+          <div style="width:40px;height:40px;flex-shrink:0;border-radius:.625rem;background:rgba(193,123,90,.08);border:1px solid rgba(193,123,90,.16);display:flex;align-items:center;justify-content:center;font-size:1.2rem;">🌿</div>
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.3rem;">
+              <p style="color:#e8c47e;font-size:.875rem;font-weight:600;">공감 (Empathy)</p>
+              <span class="tag">03</span>
+            </div>
+            <p style="color:#855020;font-size:.78rem;line-height:1.65;">말보다 행동으로 사랑을 표현한다. 작은 것들을 기억하고, 조용히 곁에 있어준다.</p>
+            <div style="margin-top:.65rem;background:#16100c;border-radius:9999px;height:3px;overflow:hidden;">
+              <div class="sense-bar run" style="--w:91%;animation-delay:.4s;background:linear-gradient(90deg,#a85f3d,#dda855);"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <p style="color:#3a2210;font-size:.7rem;text-align:center;margin-top:.875rem;letter-spacing:.06em;">전체 인구의 약 <span style="color:#5c3617;">5~9%</span> · 가장 강한 미적 감수성</p>
+    </section>
+
+    <!-- ═══════════ ISFP 전용: 컬러 팔레트 ═══════════ -->
+    <section class="reveal" style="margin-bottom:2rem;">
+      <p style="color:#5c3617;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.75rem;font-weight:500;">오늘의 팔레트</p>
+      <div class="isfp-card" style="border-radius:.875rem;padding:1.25rem;">
+        <p style="color:#855020;font-size:.78rem;line-height:1.65;margin-bottom:1rem;">오감이 언어다. 오늘 ISFP가 고른 색들.</p>
+        <div style="display:flex;gap:.75rem;align-items:center;margin-bottom:1rem;flex-wrap:wrap;">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:.35rem;">
+            <div class="swatch" style="background:#c8883a;"></div>
+            <span style="color:#5c3617;font-size:.62rem;">Canvas</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:.35rem;">
+            <div class="swatch" style="background:#a85f3d;"></div>
+            <span style="color:#5c3617;font-size:.62rem;">Terra</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:.35rem;">
+            <div class="swatch" style="background:#8aab7a;"></div>
+            <span style="color:#5c3617;font-size:.62rem;">Sage</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:.35rem;">
+            <div class="swatch" style="background:#d4956a;"></div>
+            <span style="color:#5c3617;font-size:.62rem;">Dusk</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:.35rem;">
+            <div class="swatch" style="background:#f3ddb0;"></div>
+            <span style="color:#5c3617;font-size:.62rem;">Linen</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:.35rem;">
+            <div class="swatch" style="background:#5c3617;"></div>
+            <span style="color:#5c3617;font-size:.62rem;">Umber</span>
+          </div>
+        </div>
+        <!-- color bar: gradient strip -->
+        <div style="height:8px;border-radius:9999px;background:linear-gradient(90deg,#5c3617,#a85f3d,#c8883a,#d4956a,#f3ddb0,#8aab7a,#6a8f5a);opacity:.7;"></div>
+        <p style="color:#3a2210;font-size:.68rem;text-align:center;margin-top:.75rem;letter-spacing:.05em;">설명하지 않아도 된다. 그냥 만들면 된다.</p>
+      </div>
+    </section>
+
+    <!-- ═══════════ FEATURED VIDEO ═══════════ -->
+    <section class="reveal" style="margin-bottom:2rem;">
+      <p style="color:#5c3617;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.75rem;font-weight:500;">추천 영상</p>
+      <div class="isfp-card" style="border-radius:.875rem;overflow:hidden;">
+        <div class="yt-wrap">
+          <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0&modestbranding=1"
+                  title="ISFP Featured Video"
+                  allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"
+                  allowfullscreen></iframe>
+        </div>
+        <div style="padding:1rem;">
+          <h3 style="color:#faefd9;font-size:.875rem;font-weight:600;margin-bottom:.35rem;">손끝이 먼저 알고 — ISFP Documentary</h3>
+          <p style="color:#855020;font-size:.78rem;line-height:1.65;margin-bottom:.6rem;">오감으로 세상을 받아들이는 모험가. 추상보다 눈앞의 아름다움이 진실인 사람들의 이야기.</p>
+          <div style="display:flex;align-items:center;gap:.75rem;">
+            <span style="color:#5c3617;font-size:.72rem;display:flex;align-items:center;gap:.25rem;">
+              <svg width="12" height="12" fill="#5c3617" viewBox="0 0 20 20"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/></svg>
+              19.3K
+            </span>
+            <span style="color:#5c3617;font-size:.72rem;display:flex;align-items:center;gap:.25rem;">
+              <svg width="12" height="12" fill="#5c3617" viewBox="0 0 20 20"><path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"/></svg>
+              1.7K
+            </span>
+            <span class="tag" style="margin-left:auto;">다큐멘터리</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ VIDEO PLAYLIST ═══════════ -->
+    <section class="reveal" style="margin-bottom:2rem;">
+      <p style="color:#5c3617;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.75rem;font-weight:500;">영상 플레이리스트</p>
+
+      <a href="#" class="isfp-card" style="text-decoration:none;display:flex;gap:.75rem;align-items:center;padding:.75rem;border-radius:.75rem;margin-bottom:.625rem;">
+        <div style="width:80px;height:52px;border-radius:.5rem;overflow:hidden;flex-shrink:0;background:#16100c;position:relative;">
+          <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/mqdefault.jpg" alt="" style="width:100%;height:100%;object-fit:cover;opacity:.55;" onerror="this.style.display='none'" />
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+            <div style="width:26px;height:26px;border-radius:50%;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;">
+              <svg width="10" height="10" fill="white" viewBox="0 0 20 20" style="margin-left:2px;"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>
+            </div>
+          </div>
+        </div>
+        <div style="flex:1;min-width:0;">
+          <p style="color:#e8c47e;font-size:.85rem;font-weight:500;margin-bottom:.25rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">작업실의 하루 — A Day in the Studio</p>
+          <p style="color:#5c3617;font-size:.72rem;">12:44 · 6.8K 조회</p>
+        </div>
+      </a>
+
+      <a href="#" class="isfp-card" style="text-decoration:none;display:flex;gap:.75rem;align-items:center;padding:.75rem;border-radius:.75rem;margin-bottom:.625rem;">
+        <div style="width:80px;height:52px;border-radius:.5rem;overflow:hidden;flex-shrink:0;position:relative;">
+          <div style="width:100%;height:100%;background:radial-gradient(ellipse at center,rgba(200,136,58,.25),#0d0a07);display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🌅</div>
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+            <div style="width:26px;height:26px;border-radius:50%;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;">
+              <svg width="10" height="10" fill="white" viewBox="0 0 20 20" style="margin-left:2px;"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>
+            </div>
+          </div>
+        </div>
+        <div style="flex:1;min-width:0;">
+          <p style="color:#e8c47e;font-size:.85rem;font-weight:500;margin-bottom:.25rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">조용한 반항아 — The Silent Rebel</p>
+          <p style="color:#5c3617;font-size:.72rem;">16:20 · 10.4K 조회</p>
+        </div>
+      </a>
+
+      <a href="#" class="isfp-card" style="text-decoration:none;display:flex;gap:.75rem;align-items:center;padding:.75rem;border-radius:.75rem;">
+        <div style="width:80px;height:52px;border-radius:.5rem;overflow:hidden;flex-shrink:0;position:relative;">
+          <div style="width:100%;height:100%;background:linear-gradient(135deg,#3a2210,#1e120a);display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🌿</div>
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+            <div style="width:26px;height:26px;border-radius:50%;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;">
+              <svg width="10" height="10" fill="white" viewBox="0 0 20 20" style="margin-left:2px;"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>
+            </div>
+          </div>
+        </div>
+        <div style="flex:1;min-width:0;">
+          <p style="color:#e8c47e;font-size:.85rem;font-weight:500;margin-bottom:.25rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">말보다 행동 — Actions Over Words</p>
+          <p style="color:#5c3617;font-size:.72rem;">20:57 · 8.1K 조회</p>
+        </div>
+      </a>
+    </section>
+
+    <hr class="isfp-divider" style="margin-bottom:2rem;" />
+
+    <!-- ═══════════ IMAGE CAROUSEL ═══════════ -->
+    <section class="reveal" style="margin-bottom:2rem;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;">
+        <p style="color:#5c3617;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;font-weight:500;margin:0;">갤러리</p>
+        <div id="dots" style="display:flex;gap:.375rem;align-items:center;"></div>
+      </div>
+
+      <div id="car-wrap" style="position:relative;border-radius:.875rem;overflow:hidden;">
+        <div id="car-track" class="carousel-track">
+
+          <!-- slide 1 -->
+          <div class="carousel-slide">
+            <div style="aspect-ratio:4/3;background:radial-gradient(ellipse at 45% 55%,rgba(200,136,58,.22) 0%,#0d0a07 65%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;overflow:hidden;">
+              <div style="position:absolute;inset:0;opacity:.04;">
+                <svg width="100%" height="100%" viewBox="0 0 400 300" fill="none">
+                  <path d="M 50 250 Q 150 50 350 150" stroke="#c8883a" stroke-width="1.2"/>
+                  <path d="M 30 200 Q 180 80 370 100" stroke="#e8c47e" stroke-width=".7"/>
+                  <path d="M 80 280 Q 200 100 380 180" stroke="#a85f3d" stroke-width=".5"/>
+                </svg>
+              </div>
+              <span style="font-size:3.5rem;margin-bottom:1rem;">🖌️</span>
+              <p style="font-family:'Noto Serif KR',serif;color:#faefd9;font-size:1.1rem;font-weight:500;margin-bottom:.35rem;">손끝의 감각</p>
+              <p style="color:#855020;font-size:.8rem;">색의 온도, 천의 질감, 빛의 각도</p>
+              <div style="position:absolute;bottom:.75rem;left:1rem;right:1rem;display:flex;justify-content:space-between;align-items:flex-end;">
+                <span class="tag">감각</span>
+                <span style="color:#5c3617;font-size:.72rem;">1 / 5</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- slide 2 -->
+          <div class="carousel-slide">
+            <div style="aspect-ratio:4/3;background:radial-gradient(ellipse at 60% 40%,rgba(138,171,122,.15) 0%,#0d0a07 65%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;">
+              <span style="font-size:3.5rem;margin-bottom:1rem;">🌅</span>
+              <p style="font-family:'Noto Serif KR',serif;color:#faefd9;font-size:1.1rem;font-weight:500;margin-bottom:.35rem;">조용한 반항아</p>
+              <p style="color:#855020;font-size:.8rem;">규칙보다 자신의 진심을 따른다</p>
+              <div style="position:absolute;bottom:.75rem;left:1rem;right:1rem;display:flex;justify-content:space-between;">
+                <span class="tag">자유</span>
+                <span style="color:#5c3617;font-size:.72rem;">2 / 5</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- slide 3 -->
+          <div class="carousel-slide">
+            <div style="aspect-ratio:4/3;background:linear-gradient(160deg,#1e120a,#0d0a07);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;overflow:hidden;">
+              <div style="position:absolute;inset:0;opacity:.05;">
+                <svg width="100%" height="100%" viewBox="0 0 400 300"><circle cx="200" cy="150" r="100" fill="none" stroke="#8aab7a" stroke-width=".8"/><circle cx="200" cy="150" r="55" fill="none" stroke="#6a8f5a" stroke-width=".5"/></svg>
+              </div>
+              <span style="font-size:3.5rem;margin-bottom:1rem;">🌿</span>
+              <p style="font-family:'Noto Serif KR',serif;color:#faefd9;font-size:1.1rem;font-weight:500;margin-bottom:.35rem;">조용한 따뜻함</p>
+              <p style="color:#855020;font-size:.8rem;">깊지만 드러내지 않는 공감</p>
+              <div style="position:absolute;bottom:.75rem;left:1rem;right:1rem;display:flex;justify-content:space-between;">
+                <span class="tag">공감</span>
+                <span style="color:#5c3617;font-size:.72rem;">3 / 5</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- slide 4 -->
+          <div class="carousel-slide">
+            <div style="aspect-ratio:4/3;background:#0a0805;overflow:hidden;position:relative;">
+              <img src="https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=600&q=80" alt="Studio"
+                   style="width:100%;height:100%;object-fit:cover;opacity:.45;" onerror="this.style.display='none'" />
+              <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(13,10,7,.9) 0%,rgba(133,80,32,.07) 100%);"></div>
+              <div style="position:absolute;bottom:.75rem;left:1rem;right:1rem;display:flex;justify-content:space-between;align-items:flex-end;">
+                <div>
+                  <p style="color:#faefd9;font-size:.85rem;font-weight:500;margin:0;">작업실의 빛</p>
+                  <p style="color:#a85f3d;font-size:.72rem;margin:0;">눈앞의 아름다움이 진실이다</p>
+                </div>
+                <span style="color:#5c3617;font-size:.72rem;">4 / 5</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- slide 5 -->
+          <div class="carousel-slide">
+            <div style="aspect-ratio:4/3;background:#0a0805;overflow:hidden;position:relative;">
+              <img src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=600&q=80" alt="Art"
+                   style="width:100%;height:100%;object-fit:cover;opacity:.4;" onerror="this.style.display='none'" />
+              <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(13,10,7,.9) 0%,rgba(92,54,23,.07) 100%);"></div>
+              <div style="position:absolute;bottom:.75rem;left:1rem;right:1rem;display:flex;justify-content:space-between;align-items:flex-end;">
+                <div>
+                  <p style="color:#faefd9;font-size:.85rem;font-weight:500;margin:0;">오감이 언어다</p>
+                  <p style="color:#a85f3d;font-size:.72rem;margin:0;">그냥 만들면 된다</p>
+                </div>
+                <span style="color:#5c3617;font-size:.72rem;">5 / 5</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- prev/next -->
+        <button onclick="carGo(carIdx-1)"
+          style="position:absolute;left:.5rem;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;background:rgba(13,10,7,.65);border:1px solid rgba(232,196,126,.15);display:flex;align-items:center;justify-content:center;color:#c8883a;cursor:pointer;z-index:5;transition:all .2s;"
+          onmouseover="this.style.background='rgba(13,10,7,.9)';this.style.color='#faefd9'"
+          onmouseout="this.style.background='rgba(13,10,7,.65)';this.style.color='#c8883a'">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <button onclick="carGo(carIdx+1)"
+          style="position:absolute;right:.5rem;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;background:rgba(13,10,7,.65);border:1px solid rgba(232,196,126,.15);display:flex;align-items:center;justify-content:center;color:#c8883a;cursor:pointer;z-index:5;transition:all .2s;"
+          onmouseover="this.style.background='rgba(13,10,7,.9)';this.style.color='#faefd9'"
+          onmouseout="this.style.background='rgba(13,10,7,.65)';this.style.color='#c8883a'">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+      <p style="color:#3a2210;font-size:.7rem;text-align:center;margin-top:.5rem;">← 스와이프하여 탐색 →</p>
+    </section>
+
+    <hr class="isfp-divider" style="margin-bottom:2rem;" />
+
+    <!-- ═══════════ SINGLE FEATURE IMAGE ═══════════ -->
+    <section class="reveal" style="margin-bottom:2rem;">
+      <p style="color:#5c3617;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.75rem;font-weight:500;">대표 작업</p>
+      <div class="isfp-card" style="border-radius:.875rem;overflow:hidden;cursor:pointer;"
+           onmouseover="this.querySelector('.fi-img').style.opacity='.55';this.querySelector('.fi-img').style.transform='scale(1.04)';this.querySelector('.fi-cta').style.opacity='1'"
+           onmouseout="this.querySelector('.fi-img').style.opacity='.38';this.querySelector('.fi-img').style.transform='scale(1)';this.querySelector('.fi-cta').style.opacity='0'">
+        <div style="position:relative;aspect-ratio:16/9;overflow:hidden;background:#0a0805;">
+          <img class="fi-img" src="https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=800&q=80" alt="ISFP Featured"
+               style="width:100%;height:100%;object-fit:cover;opacity:.38;transition:all .5s ease;" onerror="this.style.display='none'" />
+          <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(133,80,32,.1),transparent 60%);"></div>
+          <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+            <p class="shimmer-text" style="font-family:'Noto Serif KR',serif;font-size:2.5rem;font-weight:700;letter-spacing:.2em;margin:0;">ISFP</p>
+            <p style="color:#855020;font-size:.7rem;letter-spacing:.28em;text-transform:uppercase;margin-top:.3rem;">The Adventurer</p>
+          </div>
+          <div class="fi-cta" style="position:absolute;inset:0;display:flex;align-items:flex-end;padding:1rem;opacity:0;transition:opacity .3s;background:linear-gradient(to top,rgba(13,10,7,.75),transparent);">
+            <div style="display:flex;justify-content:space-between;align-items:center;width:100%;">
+              <span style="color:#faefd9;font-size:.85rem;font-weight:500;">대표 포트폴리오 보기</span>
+              <span style="width:32px;height:32px;border-radius:50%;background:rgba(200,136,58,.2);display:flex;align-items:center;justify-content:center;border:1px solid rgba(200,136,58,.3);">
+                <svg width="14" height="14" fill="none" stroke="#dda855" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div style="padding:1rem;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:.75rem;">
+            <div>
+              <h3 style="color:#faefd9;font-size:.875rem;font-weight:600;margin-bottom:.3rem;">Studio Series, 2024–25</h3>
+              <p style="color:#855020;font-size:.78rem;line-height:1.6;">감각, 자유, 공감의 세 작업실에서 태어난 시각 예술 시리즈.</p>
+            </div>
+            <span class="tag" style="flex-shrink:0;">포트폴리오</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ MUSIC / AMBIENT ═══════════ -->
+    <section class="reveal" style="margin-bottom:2rem;">
+      <p style="color:#5c3617;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.75rem;font-weight:500;">작업실 사운드</p>
+      <div class="isfp-card" style="border-radius:.875rem;padding:1rem;">
+        <div style="display:flex;align-items:center;gap:1rem;">
+          <div id="vinyl" style="width:56px;height:56px;border-radius:50%;flex-shrink:0;background:conic-gradient(from 0deg,#0d0a07,#3a2210,#1e120a,#5c3617,#0d0a07);border:3px solid #3a2210;position:relative;box-shadow:0 0 14px rgba(200,136,58,.14);">
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+              <div style="width:16px;height:16px;border-radius:50%;background:#0d0a07;border:2px solid #5c3617;"></div>
+            </div>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <p style="color:#faefd9;font-size:.875rem;font-weight:500;margin-bottom:.2rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Afternoon Light</p>
+            <p style="color:#5c3617;font-size:.72rem;margin-bottom:.5rem;">ISFP Studio Vol.1 · 6:52</p>
+            <div style="height:3px;background:#16100c;border-radius:9999px;overflow:hidden;">
+              <div id="pbar" class="progress-bar" style="height:100%;background:linear-gradient(90deg,#c8883a,#e8c47e);border-radius:9999px;transition:width .3s;"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top:.3rem;">
+              <span style="color:#3a2210;font-size:.65rem;">2:03</span>
+              <span style="color:#3a2210;font-size:.65rem;">6:52</span>
+            </div>
+          </div>
+          <button id="playbtn" onclick="togglePlay()"
+            style="width:40px;height:40px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,rgba(133,80,32,.38),rgba(13,10,7,.9));border:1px solid rgba(200,136,58,.3);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .25s;box-shadow:0 0 12px rgba(200,136,58,.12);">
+            <svg id="picon" width="14" height="14" fill="#c8883a" viewBox="0 0 20 20" style="margin-left:2px;">
+              <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
+            </svg>
+          </button>
+        </div>
+        <div style="border-top:1px solid #1e120a;margin-top:1rem;padding-top:1rem;display:flex;flex-direction:column;gap:.6rem;">
+          <div style="display:flex;align-items:center;gap:.75rem;cursor:pointer;">
+            <span style="color:#c8883a;font-size:.7rem;width:1rem;text-align:center;">▶</span>
+            <span style="color:#e8c47e;font-size:.78rem;flex:1;">Afternoon Light</span>
+            <span style="color:#3a2210;font-size:.72rem;">6:52</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:.75rem;cursor:pointer;"
+               onmouseover="this.querySelector('span:nth-child(2)').style.color='#e8c47e'"
+               onmouseout="this.querySelector('span:nth-child(2)').style.color='#855020'">
+            <span style="color:#3a2210;font-size:.7rem;width:1rem;text-align:center;">02</span>
+            <span style="color:#855020;font-size:.78rem;flex:1;transition:color .2s;">Linen & Canvas</span>
+            <span style="color:#3a2210;font-size:.72rem;">4:38</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:.75rem;cursor:pointer;"
+               onmouseover="this.querySelector('span:nth-child(2)').style.color='#e8c47e'"
+               onmouseout="this.querySelector('span:nth-child(2)').style.color='#855020'">
+            <span style="color:#3a2210;font-size:.7rem;width:1rem;text-align:center;">03</span>
+            <span style="color:#855020;font-size:.78rem;flex:1;transition:color .2s;">Sage & Terracotta</span>
+            <span style="color:#3a2210;font-size:.72rem;">8:17</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="isfp-divider" style="margin-bottom:2rem;" />
+
+    <!-- ═══════════ PROJECT CARDS ═══════════ -->
+    <section class="reveal" style="margin-bottom:2rem;">
+      <p style="color:#5c3617;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.75rem;font-weight:500;">진행 중인 프로젝트</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;">
+
+        <a href="#" class="isfp-card" style="border-radius:.875rem;padding:1rem;text-decoration:none;display:block;">
+          <div style="width:40px;height:40px;border-radius:.5rem;background:rgba(200,136,58,.1);border:1px solid rgba(200,136,58,.2);display:flex;align-items:center;justify-content:center;font-size:1.25rem;margin-bottom:.75rem;">🖌️</div>
+          <p style="color:#faefd9;font-size:.85rem;font-weight:600;margin-bottom:.3rem;">Color Diary</p>
+          <p style="color:#855020;font-size:.75rem;line-height:1.5;margin-bottom:.75rem;">매일의 감각을 기록하는 컬러 일기</p>
+          <span style="color:#855020;font-size:.75rem;display:flex;align-items:center;gap:.25rem;">탐색 <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></span>
+        </a>
+
+        <a href="#" class="isfp-card" style="border-radius:.875rem;padding:1rem;text-decoration:none;display:block;">
+          <div style="width:40px;height:40px;border-radius:.5rem;background:rgba(138,171,122,.08);border:1px solid rgba(138,171,122,.16);display:flex;align-items:center;justify-content:center;font-size:1.25rem;margin-bottom:.75rem;">🌿</div>
+          <p style="color:#faefd9;font-size:.85rem;font-weight:600;margin-bottom:.3rem;">Texture Atlas</p>
+          <p style="color:#855020;font-size:.75rem;line-height:1.5;margin-bottom:.75rem;">오감으로 수집한 질감 아카이브</p>
+          <span style="color:#855020;font-size:.75rem;display:flex;align-items:center;gap:.25rem;">탐색 <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></span>
+        </a>
+
+        <a href="#" class="isfp-card" style="border-radius:.875rem;padding:1rem;text-decoration:none;display:block;">
+          <div style="width:40px;height:40px;border-radius:.5rem;background:rgba(193,123,90,.08);border:1px solid rgba(193,123,90,.16);display:flex;align-items:center;justify-content:center;font-size:1.25rem;margin-bottom:.75rem;">🌅</div>
+          <p style="color:#faefd9;font-size:.85rem;font-weight:600;margin-bottom:.3rem;">Silent Rebel</p>
+          <p style="color:#855020;font-size:.75rem;line-height:1.5;margin-bottom:.75rem;">조용한 반항아의 자유 여행 기록</p>
+          <span style="color:#855020;font-size:.75rem;display:flex;align-items:center;gap:.25rem;">탐색 <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></span>
+        </a>
+
+        <a href="#" class="isfp-card" style="border-radius:.875rem;padding:1rem;text-decoration:none;display:block;">
+          <div style="width:40px;height:40px;border-radius:.5rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;font-size:1.25rem;margin-bottom:.75rem;">🎨</div>
+          <p style="color:#faefd9;font-size:.85rem;font-weight:600;margin-bottom:.3rem;">Open Studio</p>
+          <p style="color:#855020;font-size:.75rem;line-height:1.5;margin-bottom:.75rem;">모두를 위해 열린 예술 툴킷</p>
+          <span style="color:#855020;font-size:.75rem;display:flex;align-items:center;gap:.25rem;">탐색 <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></span>
+        </a>
+
+      </div>
+    </section>
+
+    <hr class="isfp-divider" style="margin-bottom:2rem;" />
+
+    <!-- ═══════════ BLOG POSTS ═══════════ -->
+    <section class="reveal" style="margin-bottom:2rem;">
+      <p style="color:#5c3617;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.75rem;font-weight:500;">최근 글</p>
+
+      <!-- ISFP 전용: 인용 블록 -->
+      <div style="margin-bottom:1rem;padding:.9rem 1rem;border-radius:.75rem;background:rgba(200,136,58,.05);border:1px solid rgba(200,136,58,.1);border-left:2.5px solid rgba(200,136,58,.4);">
+        <p style="color:#a85f3d;font-size:.85rem;line-height:1.85;font-style:italic;">"말보다 작품으로,<br/>이론보다 감각으로."</p>
+        <p style="color:#3a2210;font-size:.7rem;margin-top:.4rem;">— isfp.kr</p>
+      </div>
+
+      <a href="#" class="isfp-card" style="border-radius:.875rem;padding:1rem;text-decoration:none;display:flex;align-items:flex-start;gap:1rem;margin-bottom:.625rem;">
+        <div style="flex:1;">
+          <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem;">
+            <span class="tag">에세이</span>
+            <span style="color:#3a2210;font-size:.68rem;">2025.01.22</span>
+          </div>
+          <p style="color:#faefd9;font-size:.875rem;font-weight:600;margin-bottom:.3rem;line-height:1.45;">색의 온도를 느끼는 사람들</p>
+          <p style="color:#855020;font-size:.76rem;line-height:1.65;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">S — Sensing. 눈앞의 아름다움이 진실이다. 오감으로 세상을 읽는 ISFP의 언어에 대하여.</p>
+        </div>
+        <svg width="16" height="16" fill="none" stroke="#3a2210" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:2px;"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+      </a>
+
+      <a href="#" class="isfp-card" style="border-radius:.875rem;padding:1rem;text-decoration:none;display:flex;align-items:flex-start;gap:1rem;margin-bottom:.625rem;">
+        <div style="flex:1;">
+          <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem;">
+            <span class="tag">자유</span>
+            <span style="color:#3a2210;font-size:.68rem;">2025.01.10</span>
+          </div>
+          <p style="color:#faefd9;font-size:.875rem;font-weight:600;margin-bottom:.3rem;line-height:1.45;">조용한 반항아의 선언</p>
+          <p style="color:#855020;font-size:.76rem;line-height:1.65;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">계획 없이 떠나는 것을 두려워하지 않는다. 정해진 틀 밖에서 살아가는 ISFP의 자유에 대하여.</p>
+        </div>
+        <svg width="16" height="16" fill="none" stroke="#3a2210" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:2px;"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+      </a>
+
+      <a href="#" class="isfp-card" style="border-radius:.875rem;padding:1rem;text-decoration:none;display:flex;align-items:flex-start;gap:1rem;margin-bottom:.875rem;">
+        <div style="flex:1;">
+          <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem;">
+            <span class="tag">예술</span>
+            <span style="color:#3a2210;font-size:.68rem;">2024.12.29</span>
+          </div>
+          <p style="color:#faefd9;font-size:.875rem;font-weight:600;margin-bottom:.3rem;line-height:1.45;">그냥 만들면 된다</p>
+          <p style="color:#855020;font-size:.76rem;line-height:1.65;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">설명하지 않아도 된다. 오감이 언어인 ISFP가 세상과 소통하는 방식, 예술에 대하여.</p>
+        </div>
+        <svg width="16" height="16" fill="none" stroke="#3a2210" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:2px;"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+      </a>
+
+      <a href="#" class="link-btn" style="justify-content:center;color:#a85f3d;">
+        모든 글 보기
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+      </a>
+    </section>
+
+    <hr class="isfp-divider" style="margin-bottom:2rem;" />
+
+    <!-- ═══════════ FAQ ACCORDION ═══════════ -->
+    <section class="reveal" style="margin-bottom:2rem;">
+      <p style="color:#5c3617;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.75rem;font-weight:500;">자주 묻는 질문</p>
+
+      <details class="isfp-card" style="border-radius:.875rem;overflow:hidden;margin-bottom:.625rem;">
+        <summary style="display:flex;align-items:center;justify-content:space-between;padding:1rem;">
+          <span style="color:#e8c47e;font-size:.875rem;font-weight:500;">ISFP는 어떤 성격인가요?</span>
+          <span class="chev" style="color:#a85f3d;flex-shrink:0;">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </span>
+        </summary>
+        <div style="padding:0 1rem 1rem;">
+          <div class="isfp-divider" style="margin-bottom:.75rem;"></div>
+          <p style="color:#855020;font-size:.8rem;line-height:1.75;">ISFP는 <strong style="color:#e8c47e;">Introverted · Sensing · Feeling · Perceiving</strong>의 약자로, 🎨 The Adventurer라 불립니다. 모든 유형 중 가장 강한 미적 감수성을 가지며, 오감으로 세상을 받아들이는 조용한 예술가입니다. 전체 인구의 약 <strong style="color:#e8c47e;">5~9%</strong>를 차지합니다.</p>
+        </div>
+      </details>
+
+      <details class="isfp-card" style="border-radius:.875rem;overflow:hidden;margin-bottom:.625rem;">
+        <summary style="display:flex;align-items:center;justify-content:space-between;padding:1rem;">
+          <span style="color:#e8c47e;font-size:.875rem;font-weight:500;">협업이나 의뢰는 어떻게 하나요?</span>
+          <span class="chev" style="color:#a85f3d;flex-shrink:0;">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </span>
+        </summary>
+        <div style="padding:0 1rem 1rem;">
+          <div class="isfp-divider" style="margin-bottom:.75rem;"></div>
+          <p style="color:#855020;font-size:.8rem;line-height:1.75;">hello@isfp.kr 로 메일을 보내주세요. 말보다 작품으로, 이론보다 감각으로 소통합니다. 진심이 담긴 메시지라면 무엇이든 환영합니다.</p>
+        </div>
+      </details>
+
+      <details class="isfp-card" style="border-radius:.875rem;overflow:hidden;">
+        <summary style="display:flex;align-items:center;justify-content:space-between;padding:1rem;">
+          <span style="color:#e8c47e;font-size:.875rem;font-weight:500;">isfp.kr 도메인을 선택한 이유는?</span>
+          <span class="chev" style="color:#a85f3d;flex-shrink:0;">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </span>
+        </summary>
+        <div style="padding:0 1rem 1rem;">
+          <div class="isfp-divider" style="margin-bottom:.75rem;"></div>
+          <p style="color:#855020;font-size:.8rem;line-height:1.75;">손끝이 먼저 알고, 눈이 먼저 느끼는 사람들을 위한 공간. <strong style="color:#e8c47e;">isfp.kr</strong>은 말하지 않아도 만들고, 설명하지 않아도 느끼는 예술가들의 작업실입니다.</p>
+        </div>
+      </details>
+    </section>
+
+    <hr class="isfp-divider" style="margin-bottom:2rem;" />
+
+    <!-- ═══════════ NEWSLETTER ═══════════ -->
+    <section class="reveal" style="margin-bottom:1.75rem;">
+      <p style="color:#5c3617;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.75rem;font-weight:500;">뉴스레터 구독</p>
+      <div class="isfp-card" style="border-radius:.875rem;padding:1.25rem;">
+        <div style="display:flex;align-items:flex-start;gap:.75rem;margin-bottom:1rem;">
+          <span style="font-size:1.5rem;">🖌️</span>
+          <div>
+            <p style="color:#faefd9;font-size:.875rem;font-weight:600;margin-bottom:.2rem;">작업실에서 오는 편지</p>
+            <p style="color:#855020;font-size:.78rem;line-height:1.65;">새로운 작업, 색채 이야기, 감각의 기록을 가장 먼저 받아볼 수 있습니다.</p>
+          </div>
+        </div>
+        <form onsubmit="doSubscribe(event)" style="display:flex;gap:.5rem;">
+          <input type="email" placeholder="your@email.com"
+            style="flex:1;background:#16100c;border:1px solid #3a2210;border-radius:.5rem;padding:.65rem .9rem;color:#e8c47e;font-size:.85rem;outline:none;transition:border-color .2s;"
+            onfocus="this.style.borderColor='#5c3617'" onblur="this.style.borderColor='#3a2210'" />
+          <button type="submit"
+            style="padding:.65rem 1.1rem;border-radius:.5rem;background:linear-gradient(135deg,#855020,#c8883a);color:#0d0a07;font-size:.85rem;font-weight:700;border:none;cursor:pointer;white-space:nowrap;transition:filter .2s;"
+            onmouseover="this.style.filter='brightness(1.15)'" onmouseout="this.style.filter='brightness(1)'">구독</button>
+        </form>
+        <p id="sub-ok" style="color:#8aab7a;font-size:.78rem;margin-top:.5rem;display:none;">✓ 구독 완료! 작업실에서 오는 편지를 기대해주세요 🎨</p>
+      </div>
+    </section>
+
+    <!-- ═══════════ CONTACT FORM ═══════════ -->
+    <section class="reveal" style="margin-bottom:3rem;">
+      <p style="color:#5c3617;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.75rem;font-weight:500;">작업 의뢰</p>
+      <div class="isfp-card" style="border-radius:.875rem;padding:1.25rem;">
+        <form onsubmit="doContact(event)" style="display:flex;flex-direction:column;gap:.75rem;">
+          <input type="text" placeholder="이름"
+            style="background:#16100c;border:1px solid #3a2210;border-radius:.5rem;padding:.65rem .9rem;color:#e8c47e;font-size:.85rem;outline:none;transition:border-color .2s;"
+            onfocus="this.style.borderColor='#5c3617'" onblur="this.style.borderColor='#3a2210'" />
+          <input type="email" placeholder="이메일"
+            style="background:#16100c;border:1px solid #3a2210;border-radius:.5rem;padding:.65rem .9rem;color:#e8c47e;font-size:.85rem;outline:none;transition:border-color .2s;"
+            onfocus="this.style.borderColor='#5c3617'" onblur="this.style.borderColor='#3a2210'" />
+          <select style="background:#16100c;border:1px solid #3a2210;border-radius:.5rem;padding:.65rem .9rem;color:#855020;font-size:.85rem;outline:none;transition:border-color .2s;appearance:none;"
+            onfocus="this.style.borderColor='#5c3617'" onblur="this.style.borderColor='#3a2210'">
+            <option value="" disabled selected>의뢰 유형 선택</option>
+            <option style="background:#16100c;color:#e8c47e;">아트워크 의뢰</option>
+            <option style="background:#16100c;color:#e8c47e;">협업 제안</option>
+            <option style="background:#16100c;color:#e8c47e;">전시 기획</option>
+            <option style="background:#16100c;color:#e8c47e;">기타 문의</option>
+          </select>
+          <textarea rows="4" placeholder="작품에 대한 감각적인 이야기를 들려주세요..."
+            style="background:#16100c;border:1px solid #3a2210;border-radius:.5rem;padding:.65rem .9rem;color:#e8c47e;font-size:.85rem;outline:none;resize:none;transition:border-color .2s;font-family:inherit;"
+            onfocus="this.style.borderColor='#5c3617'" onblur="this.style.borderColor='#3a2210'"></textarea>
+          <button type="submit"
+            style="width:100%;padding:.75rem;border-radius:.5rem;background:linear-gradient(135deg,#3a2210,#1e120a);color:#e8c47e;font-size:.875rem;font-weight:600;border:1px solid rgba(232,196,126,.1);cursor:pointer;transition:filter .2s,transform .2s;"
+            onmouseover="this.style.filter='brightness(1.3)';this.style.transform='translateY(-1px)'"
+            onmouseout="this.style.filter='brightness(1)';this.style.transform='translateY(0)'">
+            작업 시작하기 🎨
+          </button>
+        </form>
+        <p id="con-ok" style="color:#8aab7a;font-size:.78rem;margin-top:.5rem;text-align:center;display:none;">✓ 메시지가 전달되었습니다. 곧 연락드리겠습니다 🌿</p>
+      </div>
+    </section>
+
+    <!-- ═══════════ FOOTER ═══════════ -->
+    <footer class="reveal" style="text-align:center;">
+      <hr class="isfp-divider" style="margin-bottom:1.5rem;" />
+      <div style="display:flex;justify-content:center;gap:.45rem;flex-wrap:wrap;margin-bottom:1rem;">
+        <span class="atelier-tag" style="font-size:.7rem;">🖌️ 감각</span>
+        <span style="color:#1e120a;display:flex;align-items:center;font-size:.8rem;">·</span>
+        <span class="atelier-tag" style="font-size:.7rem;">🌅 자유</span>
+        <span style="color:#1e120a;display:flex;align-items:center;font-size:.8rem;">·</span>
+        <span class="atelier-tag" style="font-size:.7rem;">🌿 공감</span>
+      </div>
+      <p style="font-family:'Noto Serif KR',serif;color:#855020;font-size:.875rem;font-style:italic;margin-bottom:.25rem;">손끝이 먼저 알고, 눈이 먼저 느낀다</p>
+      <p style="color:#3a2210;font-size:.75rem;margin-bottom:1rem;">— 말하지 않아도 만든다. 설명하지 않아도 느낀다 —</p>
+      <a href="https://isfp.kr"
+         style="color:#5c3617;font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;transition:color .2s;"
+         onmouseover="this.style.color='#a85f3d'" onmouseout="this.style.color='#5c3617'">isfp.kr</a>
+      <p style="color:#3a2210;font-size:.7rem;margin-top:.75rem;">I · S · F · P · Made with Tailwind CSS 4</p>
+      <p style="color:#1e120a;font-size:.68rem;margin-top:.3rem;letter-spacing:.06em;">감각 · 자유 · 예술 · 현재 · 진정성</p>
+    </footer>
+
+  </main>
+
+  <!-- ░░ JS ░░ -->
+  <script>
+    // ── Particles ──────────────────────────────────
+    (function() {
+      const c = document.getElementById('ptcl');
+      const warmCols = [
+        'rgba(200,136,58,', 'rgba(193,123,90,',
+        'rgba(212,149,106,', 'rgba(138,171,122,',
+        'rgba(232,196,126,'
+      ];
+
+      // pigment orbs (slow float)
+      for (let i = 0; i < 10; i++) {
+        const e = document.createElement('div');
+        const s = Math.random() * 6 + 3;
+        const col = warmCols[Math.floor(Math.random() * warmCols.length)];
+        e.style.cssText = `
+          position:absolute;
+          width:${s}px; height:${s}px;
+          border-radius:50%;
+          background:${col}${Math.random() * .4 + .1});
+          left:${Math.random() * 100}%;
+          bottom:${Math.random() * 22}%;
+          animation:bleed ${Math.random() * 7 + 6}s ease-in-out ${Math.random() * 8}s infinite;
+          pointer-events:none;
+          filter:blur(${Math.random() > .5 ? '2px' : '1px'});
+        `;
+        c.appendChild(e);
+      }
+
+      // pigment dust (falling)
+      for (let i = 0; i < 20; i++) {
+        const e = document.createElement('div');
+        const s = Math.random() * 3 + .8;
+        const col = warmCols[Math.floor(Math.random() * warmCols.length)];
+        e.style.cssText = `
+          position:absolute;
+          width:${s}px; height:${s * (Math.random() > .5 ? 1 : 1.8)}px;
+          border-radius:${Math.random() > .5 ? '50%' : '2px'};
+          background:${col}${Math.random() * .35 + .05});
+          left:${Math.random() * 100}%;
+          top:${Math.random() * 12}%;
+          animation:pigment-drift ${Math.random() * 7 + 6}s linear ${Math.random() * 9}s infinite;
+          pointer-events:none;
+        `;
+        c.appendChild(e);
+      }
+    })();
+
+    // ── Scroll reveal ──────────────────────────────
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          entry.target.style.animationDelay = (i * 0.07) + 's';
+          entry.target.classList.add('in');
+          entry.target.querySelectorAll('.sense-bar').forEach(b => b.classList.add('run'));
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // ── Carousel ───────────────────────────────────
+    let carIdx = 0;
+    const carTotal = 5;
+    const carTrack = document.getElementById('car-track');
+    const dotsEl   = document.getElementById('dots');
+
+    for (let i = 0; i < carTotal; i++) {
+      const d = document.createElement('button');
+      d.style.cssText = `height:6px;border-radius:9999px;border:none;cursor:pointer;transition:all .25s;padding:0;background:${i===0?'#c8883a':'#3a2210'};width:${i===0?'16px':'6px'};`;
+      d.onclick = () => carGo(i);
+      dotsEl.appendChild(d);
+    }
+
+    function carGo(n) {
+      carIdx = ((n % carTotal) + carTotal) % carTotal;
+      carTrack.style.transform = `translateX(-${carIdx * 100}%)`;
+      Array.from(dotsEl.children).forEach((d, i) => {
+        d.style.background = i === carIdx ? '#c8883a' : '#3a2210';
+        d.style.width = i === carIdx ? '16px' : '6px';
+      });
+    }
+
+    let carTimer = setInterval(() => carGo(carIdx + 1), 4500);
+    document.getElementById('car-wrap').addEventListener('mouseenter', () => clearInterval(carTimer));
+    document.getElementById('car-wrap').addEventListener('mouseleave', () => { carTimer = setInterval(() => carGo(carIdx + 1), 4500); });
+
+    let tx = 0;
+    document.getElementById('car-wrap').addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
+    document.getElementById('car-wrap').addEventListener('touchend', e => {
+      const d = tx - e.changedTouches[0].clientX;
+      if (Math.abs(d) > 38) carGo(carIdx + (d > 0 ? 1 : -1));
+    }, {passive:true});
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft')  carGo(carIdx - 1);
+      if (e.key === 'ArrowRight') carGo(carIdx + 1);
+    });
+
+    // ── Music player ───────────────────────────────
+    let playing = false;
+    const vinyl = document.getElementById('vinyl');
+    const picon = document.getElementById('picon');
+    const pbar  = document.getElementById('pbar');
+
+    function togglePlay() {
+      playing = !playing;
+      if (playing) {
+        vinyl.classList.add('vinyl-spin');
+        pbar.classList.add('playing');
+        picon.innerHTML = `<path d="M5.5 3.5A1.5 1.5 0 017 5v10a1.5 1.5 0 01-3 0V5a1.5 1.5 0 011.5-1.5zM12.5 3.5A1.5 1.5 0 0114 5v10a1.5 1.5 0 01-3 0V5a1.5 1.5 0 011.5-1.5z"/>`;
+      } else {
+        vinyl.classList.remove('vinyl-spin');
+        pbar.classList.remove('playing');
+        picon.innerHTML = `<path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>`;
+      }
+    }
+
+    // ── Forms ──────────────────────────────────────
+    function doSubscribe(e) {
+      e.preventDefault();
+      document.getElementById('sub-ok').style.display = 'block';
+      e.target.reset();
+    }
+    function doContact(e) {
+      e.preventDefault();
+      document.getElementById('con-ok').style.display = 'block';
+      e.target.reset();
+    }
+  </script>
+
+</body>
+</html>
