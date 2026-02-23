@@ -1,0 +1,1009 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>isfp.kr</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: #080b08;
+    }
+
+    /* ── 배경 오브 — 자연·대지·이끼·테라코타 ── */
+    .bg-orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(100px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    /* 세이지 그린 — 좌상 */
+    .bg-orb-1 {
+      width: 640px; height: 500px;
+      top: -200px; left: -170px;
+      background: radial-gradient(ellipse, rgba(110,150,100,0.18) 0%, transparent 70%);
+    }
+    /* 테라코타 — 우하 */
+    .bg-orb-2 {
+      width: 560px; height: 560px;
+      bottom: -200px; right: -150px;
+      background: radial-gradient(ellipse, rgba(185,110,80,0.14) 0%, transparent 70%);
+    }
+    /* 더스트 로즈 — 중앙 */
+    .bg-orb-3 {
+      width: 420px; height: 320px;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(ellipse, rgba(195,155,135,0.09) 0%, transparent 70%);
+    }
+    /* 모스 — 우상 */
+    .bg-orb-4 {
+      width: 300px; height: 300px;
+      top: 5%; right: 8%;
+      background: radial-gradient(ellipse, rgba(80,120,70,0.10) 0%, transparent 70%);
+    }
+    /* 웜 베이지 — 좌하 */
+    .bg-orb-5 {
+      width: 280px; height: 200px;
+      bottom: 10%; left: 5%;
+      background: radial-gradient(ellipse, rgba(200,175,140,0.08) 0%, transparent 70%);
+    }
+
+    /* 배경 미세 흙 질감 점 */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(1px 1px at 10%  14%, rgba(180,210,160,0.28) 0%, transparent 100%),
+        radial-gradient(1px 1px at 26%  70%, rgba(210,170,140,0.22) 0%, transparent 100%),
+        radial-gradient(1px 1px at 40%  28%, rgba(180,210,160,0.20) 0%, transparent 100%),
+        radial-gradient(1px 1px at 55%  83%, rgba(205,165,135,0.24) 0%, transparent 100%),
+        radial-gradient(1px 1px at 69%  18%, rgba(180,210,160,0.20) 0%, transparent 100%),
+        radial-gradient(1px 1px at 80%  57%, rgba(200,170,145,0.18) 0%, transparent 100%),
+        radial-gradient(1px 1px at 92%  10%, rgba(180,210,160,0.22) 0%, transparent 100%),
+        radial-gradient(1px 1px at 15%  88%, rgba(205,165,135,0.18) 0%, transparent 100%),
+        radial-gradient(1px 1px at 59%  47%, rgba(180,210,160,0.14) 0%, transparent 100%),
+        radial-gradient(1px 1px at 47%  76%, rgba(195,175,150,0.16) 0%, transparent 100%),
+        radial-gradient(1px 1px at 83%  36%, rgba(185,215,165,0.16) 0%, transparent 100%),
+        radial-gradient(1px 1px at 33%  42%, rgba(210,170,140,0.14) 0%, transparent 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Scene ── */
+    .scene {
+      perspective: 900px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── 카드 래퍼 ── */
+    .card-wrap {
+      width: 380px;
+      height: 240px;
+      position: relative;
+      transform-style: preserve-3d;
+      border-radius: 16px;
+      cursor: pointer;
+      animation: card-enter 1.15s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    /* ISFP: 부드럽고 자연스러운 등장 */
+    @keyframes card-enter {
+      from {
+        opacity: 0;
+        transform: rotateX(20deg) rotateY(-16deg) scale(0.89) translateY(30px);
+        filter: blur(5px);
+      }
+      to {
+        opacity: 1;
+        transform: rotateX(0deg) rotateY(0deg) scale(1) translateY(0);
+        filter: blur(0);
+      }
+    }
+
+    /* ISFP: 숲속 나뭇잎처럼 은은하게 흔들리는 유영 */
+    @keyframes float-idle {
+      0%,100% { transform: rotateX(2deg)   rotateY(-2deg)  translateY(0px);  }
+      30%      { transform: rotateX(-1.5deg) rotateY(2.5deg) translateY(-6px); }
+      60%      { transform: rotateX(2.5deg)  rotateY(-1deg)  translateY(-3px); }
+    }
+
+    .card-wrap.is-idle {
+      animation:
+        card-enter 1.15s cubic-bezier(0.22, 1, 0.36, 1) both,
+        float-idle 8.5s ease-in-out 1.15s infinite;
+    }
+
+    /* ── 카드 본체 ── */
+    .card {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+
+      /* ISFP: 세이지·테라코타 반투명 */
+      background:
+        linear-gradient(
+          136deg,
+          rgba(155,185,140,0.16) 0%,
+          rgba(130,160,115,0.08) 30%,
+          rgba(185,145,120,0.13) 65%,
+          rgba(145,170,130,0.10) 100%
+        );
+      backdrop-filter: blur(22px) saturate(165%) brightness(1.04);
+      -webkit-backdrop-filter: blur(22px) saturate(165%) brightness(1.04);
+
+      border: 1px solid rgba(175,200,155,0.26);
+      box-shadow:
+        0 32px 70px rgba(5,10,5,0.65),
+        0  8px 20px rgba(5,10,5,0.45),
+        inset 0  1px 0   rgba(210,230,195,0.44),
+        inset 0  2px 8px rgba(160,190,140,0.10),
+        inset 0 -1px 0   rgba(165,130,105,0.10),
+        inset 0  0  40px rgba(120,155,100,0.06);
+    }
+
+    /* ── 홀로그래픽 — 자연 스펙트럼 ── */
+    /* 그린·세이지·테라코타·로즈 위주 웜-내추럴 스펙트럼 */
+    .card-holo {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      z-index: 10;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+
+      background:
+        repeating-linear-gradient(
+          calc(var(--r, 122deg)),
+          hsla(100, 45%, 65%, 0.12) 0%,
+          hsla(75,  50%, 62%, 0.10) 8%,
+          hsla(50,  55%, 65%, 0.12) 16%,
+          hsla(25,  60%, 63%, 0.10) 24%,
+          hsla(5,   55%, 65%, 0.11) 32%,
+          hsla(340, 50%, 67%, 0.10) 40%,
+          hsla(120, 45%, 64%, 0.11) 48%,
+          hsla(85,  48%, 63%, 0.10) 56%,
+          hsla(100, 45%, 65%, 0.12) 64%
+        ),
+        radial-gradient(
+          ellipse 58% 58% at var(--mx, 50%) var(--my, 50%),
+          rgba(195,215,175,0.12) 0%,
+          transparent 65%
+        );
+
+      mix-blend-mode: screen;
+    }
+
+    .card-wrap:hover .card-holo { opacity: 1; }
+
+    /* ── 수채화·캔버스 텍스처 ── */
+    /* ISFP 아티스트의 수채화 느낌 */
+    .card-texture {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      z-index: 8;
+      pointer-events: none;
+      background-image:
+        repeating-linear-gradient(
+          50deg,
+          rgba(160,190,140,0.000) 0px,
+          rgba(160,190,140,0.000) 5px,
+          rgba(160,190,140,0.014) 5px,
+          rgba(160,190,140,0.014) 6px
+        ),
+        repeating-linear-gradient(
+          -40deg,
+          rgba(185,145,120,0.000) 0px,
+          rgba(185,145,120,0.000) 7px,
+          rgba(185,145,120,0.010) 7px,
+          rgba(185,145,120,0.010) 8px
+        ),
+        /* 가로 수채화 번짐 */
+        repeating-linear-gradient(
+          180deg,
+          rgba(175,200,155,0.000) 0px,
+          rgba(175,200,155,0.000) 12px,
+          rgba(175,200,155,0.007) 12px,
+          rgba(175,200,155,0.007) 13px
+        );
+      opacity: 0.75;
+    }
+
+    /* ── 엣지 하이라이트 ── */
+    .card-edge {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      z-index: 9;
+      pointer-events: none;
+      background:
+        linear-gradient(180deg, rgba(215,230,200,0.40) 0px, rgba(215,230,200,0.00) 3px),
+        linear-gradient(90deg,  rgba(195,215,175,0.22) 0px, rgba(195,215,175,0.00) 2px),
+        linear-gradient(270deg, rgba(175,200,155,0.14) 0px, rgba(175,200,155,0.00) 2px),
+        linear-gradient(0deg,   rgba(165,140,115,0.08) 0px, rgba(165,140,115,0.00) 2px);
+    }
+
+    /* ── 스포트라이트 ── */
+    .card-spot {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      z-index: 11;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.22s ease;
+      background: radial-gradient(
+        ellipse 44% 44% at var(--mx, 50%) var(--my, 50%),
+        rgba(210,225,190,0.10) 0%,
+        transparent 70%
+      );
+    }
+
+    .card-wrap:hover .card-spot { opacity: 1; }
+
+    /* ── Shimmer — 숲빛 아침 햇살 ── */
+    .card-shimmer {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      z-index: 12;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .card-shimmer::before {
+      content: '';
+      position: absolute;
+      top: -100%; left: -70%;
+      width: 42%; height: 300%;
+      background: linear-gradient(
+        109deg,
+        transparent              37%,
+        rgba(190,215,170,0.065)  47%,
+        rgba(210,230,190,0.130)  50%,
+        rgba(190,215,170,0.065)  53%,
+        transparent              63%
+      );
+      transform: skewX(-9deg);
+      /* ISFP: 느리고 부드러운 주기 */
+      animation: leaf-sweep 7.5s ease-in-out 1.4s infinite;
+    }
+
+    .card-shimmer::after {
+      content: '';
+      position: absolute;
+      top: -100%; left: -70%;
+      width: 20%; height: 300%;
+      background: linear-gradient(
+        109deg,
+        transparent              39%,
+        rgba(175,145,120,0.040)  49%,
+        rgba(195,165,140,0.080)  50%,
+        rgba(175,145,120,0.040)  51%,
+        transparent              61%
+      );
+      transform: skewX(-9deg);
+      animation: leaf-sweep 7.5s ease-in-out 1.75s infinite;
+    }
+
+    @keyframes leaf-sweep {
+      0%   { left: -70%; opacity: 0;  }
+      8%   {              opacity: 1; }
+      52%  { left: 130%; opacity: 1;  }
+      53%  {              opacity: 0; }
+      100% { left: 130%; opacity: 0;  }
+    }
+
+    .card-wrap:hover .card-shimmer::before,
+    .card-wrap:hover .card-shimmer::after {
+      animation-play-state: paused;
+    }
+
+    /* ── 배경 SVG — ISFP 아티스트·자연·감각 세계 ── */
+    .card-inner-art {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      z-index: 6;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    /* ── 수평선 ── */
+    .card-hline {
+      position: absolute;
+      left: 24px; right: 24px;
+      bottom: 52px;
+      height: 1px;
+      z-index: 14;
+      background: linear-gradient(
+        to right,
+        transparent,
+        rgba(165,195,145,0.18) 25%,
+        rgba(165,195,145,0.18) 75%,
+        transparent
+      );
+      pointer-events: none;
+    }
+
+    /* ── 수직 미세선 ── */
+    .card-vline {
+      position: absolute;
+      top: 18%; bottom: 18%; left: 50%;
+      width: 1px;
+      z-index: 14;
+      background: linear-gradient(
+        to bottom,
+        transparent,
+        rgba(165,195,145,0.14) 30%,
+        rgba(165,195,145,0.14) 70%,
+        transparent
+      );
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .card-wrap:hover .card-vline { opacity: 1; }
+
+    /* ── hover 의미 오버레이 ── */
+    .card-meanings {
+      position: absolute;
+      inset: 0;
+      z-index: 13;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.45s ease;
+    }
+
+    .card-wrap:hover .card-meanings { opacity: 1; }
+
+    .meanings-row {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .meaning-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .meaning-glyph {
+      font-size: 16px;
+      line-height: 1;
+      filter: drop-shadow(0 0 7px rgba(160,200,130,0.65));
+      opacity: 0.87;
+    }
+
+    .meaning-label {
+      font-size: 6.5px;
+      font-weight: 500;
+      letter-spacing: 0.20em;
+      text-transform: uppercase;
+      color: rgba(185,210,165,0.44);
+      white-space: nowrap;
+    }
+
+    .meaning-sep {
+      width: 1px;
+      height: 26px;
+      background: linear-gradient(to bottom, transparent, rgba(165,195,145,0.20), transparent);
+    }
+
+    /* ── 카드 컨텐츠 ── */
+    .card-content {
+      position: relative;
+      z-index: 15;
+      width: 100%;
+      height: 100%;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-rows: 1fr auto;
+      padding: 24px 26px;
+    }
+
+    .card-name {
+      grid-column: 1;
+      grid-row: 1;
+      align-self: start;
+    }
+
+    .name-main {
+      font-size: 54px;
+      font-weight: 100;
+      letter-spacing: 0.22em;
+      color: rgba(230,242,220,0.95);
+      line-height: 1;
+      text-transform: lowercase;
+      text-shadow:
+        0  1px 0   rgba(240,255,230,0.42),
+        0 -1px 0   rgba(15,25,10,0.26),
+        0  0  20px rgba(150,190,125,0.32),
+        0  0  42px rgba(130,170,105,0.16);
+      filter: drop-shadow(0 0 20px rgba(140,180,115,0.24));
+    }
+
+    .name-dot {
+      color: rgba(155,195,130,0.90);
+      font-weight: 200;
+    }
+
+    .name-sub {
+      margin-top: 5px;
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 0.30em;
+      text-transform: uppercase;
+      color: rgba(175,205,155,0.36);
+    }
+
+    .card-meta {
+      grid-column: 1;
+      grid-row: 2;
+      align-self: end;
+    }
+
+    .meta-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 3px;
+    }
+    .meta-row:last-child { margin-bottom: 0; }
+
+    .meta-dot {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: rgba(155,190,130,0.55);
+      flex-shrink: 0;
+    }
+
+    .meta-text {
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(180,208,158,0.34);
+      white-space: nowrap;
+    }
+
+    .meta-text em {
+      font-style: normal;
+      color: rgba(205,228,185,0.58);
+    }
+
+    .card-domain {
+      grid-column: 2;
+      grid-row: 2;
+      align-self: end;
+      justify-self: end;
+      text-align: right;
+    }
+
+    .domain-url {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      color: rgba(180,208,158,0.50);
+      text-transform: lowercase;
+    }
+
+    .domain-tld {
+      color: rgba(150,190,125,0.74);
+    }
+
+    /* ── ISFP 레터 태그 ── */
+    .letter-tag {
+      position: absolute;
+      top: 0; right: 0;
+      z-index: 16;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1px;
+      padding: 14px 12px 10px;
+      pointer-events: none;
+    }
+
+    .letter-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1px;
+    }
+
+    .letter-char {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: rgba(175,208,155,0.58);
+      line-height: 1;
+    }
+
+    .letter-word {
+      font-size: 5.5px;
+      font-weight: 400;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: rgba(165,198,145,0.30);
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .letter-sep {
+      width: 12px;
+      height: 1px;
+      background: rgba(155,190,130,0.20);
+      margin: 2px 0;
+    }
+
+    /* ── 꽃잎 낙하 파티클 ── */
+    @keyframes petal-fall {
+      0%   {
+        transform: translate(0, -10px) rotate(0deg) scale(1);
+        opacity: 0;
+      }
+      10%  { opacity: 0.8; }
+      80%  { opacity: 0.4; }
+      100% {
+        transform: translate(var(--dx, 12px), 260px) rotate(var(--dr, 180deg)) scale(0.6);
+        opacity: 0;
+      }
+    }
+
+    .petal {
+      position: absolute;
+      top: 0;
+      pointer-events: none;
+      animation: petal-fall ease-in infinite;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="bg-orb bg-orb-1"></div>
+  <div class="bg-orb bg-orb-2"></div>
+  <div class="bg-orb bg-orb-3"></div>
+  <div class="bg-orb bg-orb-4"></div>
+  <div class="bg-orb bg-orb-5"></div>
+
+  <div class="scene">
+    <div class="card-wrap is-idle" id="cardWrap">
+
+      <div class="card-holo"    id="cardHolo"></div>
+      <div class="card-spot"    id="cardSpot"></div>
+      <div class="card-shimmer"></div>
+      <div class="card-texture"></div>
+      <div class="card-edge"></div>
+
+      <div class="card" id="cardFace">
+
+        <!-- ── 배경 SVG — 자연·감각·아티스트 세계 ── -->
+        <div class="card-inner-art">
+          <svg width="380" height="240" viewBox="0 0 380 240"
+               fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <!-- 우측 페이드 -->
+              <radialGradient id="fg-r" cx="80%" cy="50%" r="45%">
+                <stop offset="0%"   stop-color="white" stop-opacity="1"/>
+                <stop offset="100%" stop-color="white" stop-opacity="0"/>
+              </radialGradient>
+              <mask id="mk-r"><rect width="380" height="240" fill="url(#fg-r)"/></mask>
+
+              <!-- 상단 페이드 -->
+              <radialGradient id="fg-t" cx="50%" cy="10%" r="50%">
+                <stop offset="0%"   stop-color="white" stop-opacity="1"/>
+                <stop offset="100%" stop-color="white" stop-opacity="0"/>
+              </radialGradient>
+              <mask id="mk-t"><rect width="380" height="240" fill="url(#fg-t)"/></mask>
+
+              <!-- 좌하 페이드 -->
+              <radialGradient id="fg-bl" cx="15%" cy="85%" r="40%">
+                <stop offset="0%"   stop-color="white" stop-opacity="1"/>
+                <stop offset="100%" stop-color="white" stop-opacity="0"/>
+              </radialGradient>
+              <mask id="mk-bl"><rect width="380" height="240" fill="url(#fg-bl)"/></mask>
+            </defs>
+
+            <!-- ══ 수채화 붓터치 얼룩 — 배경 워시 ══ -->
+            <!-- 세이지 그린 워시 -->
+            <ellipse cx="310" cy="60"  rx="95" ry="55"
+                     fill="rgba(140,180,115,0.07)" mask="url(#mk-r)"/>
+            <ellipse cx="330" cy="90"  rx="70" ry="40"
+                     fill="rgba(120,165,95,0.05)"  mask="url(#mk-r)"/>
+            <!-- 테라코타 워시 -->
+            <ellipse cx="55"  cy="195" rx="75" ry="45"
+                     fill="rgba(185,120,90,0.07)"  mask="url(#mk-bl)"/>
+            <!-- 더스트 로즈 워시 -->
+            <ellipse cx="190" cy="30"  rx="120" ry="30"
+                     fill="rgba(200,160,150,0.05)" mask="url(#mk-t)"/>
+
+            <!-- ══ 식물 줄기와 잎 — 우측 ══ -->
+            <g mask="url(#mk-r)" opacity="0.32">
+              <!-- 메인 줄기 -->
+              <path d="M370 240 Q355 200 348 170 Q340 140 344 110 Q348 80 338 55 Q330 35 318 18"
+                    stroke="rgba(130,165,105,0.80)" stroke-width="1.2"
+                    stroke-linecap="round" fill="none"/>
+
+              <!-- 잎 1 — 우상 -->
+              <path d="M344 110 Q358 95 368 80 Q372 70 365 65 Q355 68 348 80 Q342 92 344 110 Z"
+                    fill="rgba(140,180,115,0.22)"
+                    stroke="rgba(130,170,108,0.55)" stroke-width="0.6"/>
+              <!-- 잎 맥 -->
+              <path d="M344 110 Q358 90 365 65"
+                    stroke="rgba(130,170,108,0.30)" stroke-width="0.4" fill="none"/>
+
+              <!-- 잎 2 — 좌측 가지 -->
+              <path d="M348 145 Q332 135 322 120 Q318 110 325 106 Q334 108 340 120 Q346 133 348 145 Z"
+                    fill="rgba(120,160,98,0.18)"
+                    stroke="rgba(115,155,92,0.50)" stroke-width="0.6"/>
+              <path d="M348 145 Q330 128 325 106"
+                    stroke="rgba(115,155,92,0.28)" stroke-width="0.4" fill="none"/>
+
+              <!-- 잎 3 — 상단 우 -->
+              <path d="M338 68 Q348 52 358 42 Q364 36 360 30 Q352 32 346 42 Q338 54 338 68 Z"
+                    fill="rgba(150,185,125,0.20)"
+                    stroke="rgba(140,178,118,0.52)" stroke-width="0.5"/>
+              <path d="M338 68 Q350 50 360 30"
+                    stroke="rgba(140,178,118,0.28)" stroke-width="0.35" fill="none"/>
+
+              <!-- 잎 4 — 작은 가지 -->
+              <path d="M344 82 Q330 74 324 62 Q322 56 328 54 Q335 56 340 66 Q344 75 344 82 Z"
+                    fill="rgba(125,162,100,0.15)"
+                    stroke="rgba(120,158,96,0.45)" stroke-width="0.5"/>
+
+              <!-- 잎 5 — 상단 -->
+              <path d="M326 28 Q318 14 322 4 Q328 -2 334 4 Q338 12 330 24 Q328 26 326 28 Z"
+                    fill="rgba(155,192,130,0.18)"
+                    stroke="rgba(148,185,122,0.48)" stroke-width="0.5"/>
+
+              <!-- 작은 꽃봉오리 -->
+              <circle cx="318" cy="18" r="3.5"
+                      fill="rgba(200,155,140,0.30)"
+                      stroke="rgba(195,148,132,0.55)" stroke-width="0.6"/>
+              <circle cx="318" cy="18" r="1.8"
+                      fill="rgba(215,175,160,0.45)"/>
+            </g>
+
+            <!-- ══ 수채화 팔레트 — 좌상 ══ -->
+            <g mask="url(#mk-t)" opacity="0.28">
+              <!-- 크고 작은 수채 원들 — 팔레트 느낌 -->
+              <circle cx="42"  cy="30" r="14"
+                      fill="rgba(155,192,130,0.30)"
+                      stroke="rgba(145,185,120,0.45)" stroke-width="0.5"/>
+              <circle cx="42"  cy="30" r="9"
+                      fill="rgba(165,200,140,0.20)"/>
+
+              <circle cx="72"  cy="22" r="10"
+                      fill="rgba(185,130,110,0.28)"
+                      stroke="rgba(178,122,102,0.42)" stroke-width="0.5"/>
+              <circle cx="72"  cy="22" r="6"
+                      fill="rgba(195,140,120,0.18)"/>
+
+              <circle cx="98"  cy="32" r="8"
+                      fill="rgba(200,175,150,0.26)"
+                      stroke="rgba(192,168,142,0.40)" stroke-width="0.5"/>
+              <circle cx="98"  cy="32" r="4.5"
+                      fill="rgba(208,182,158,0.18)"/>
+
+              <circle cx="122" cy="20" r="7"
+                      fill="rgba(130,165,105,0.24)"
+                      stroke="rgba(122,158,98,0.38)" stroke-width="0.4"/>
+              <circle cx="56"  cy="48" r="6"
+                      fill="rgba(175,145,125,0.22)"
+                      stroke="rgba(168,138,118,0.36)" stroke-width="0.4"/>
+
+              <!-- 팔레트 연결선 -->
+              <path d="M42 30 Q57 26 72 22 Q85 22 98 32 Q110 38 122 20"
+                    stroke="rgba(155,185,135,0.20)" stroke-width="0.4"
+                    fill="none" stroke-dasharray="2 3"/>
+            </g>
+
+            <!-- ══ 물결 — 감각의 흐름 ══ -->
+            <g opacity="0.15">
+              <path d="M0 130 Q50 122 95 130 Q140 138 185 128 Q230 118 275 128 Q325 138 380 126"
+                    stroke="rgba(155,192,130,0.9)" stroke-width="0.5" fill="none"/>
+              <path d="M0 140 Q55 133 100 140 Q145 147 190 138 Q235 129 280 138 Q330 148 380 138"
+                    stroke="rgba(175,148,128,0.6)" stroke-width="0.4" fill="none"/>
+              <path d="M0 150 Q60 144 105 150 Q150 156 195 147 Q240 138 285 147 Q335 156 380 148"
+                    stroke="rgba(155,192,130,0.4)" stroke-width="0.35" fill="none"/>
+            </g>
+
+            <!-- ══ 작은 꽃·풀잎 흩뿌림 ══ -->
+            <g opacity="0.30">
+              <!-- 꽃 1 -->
+              <g transform="translate(200, 185)">
+                <circle cx="0" cy="0" r="2" fill="rgba(200,160,145,0.70)"/>
+                <circle cx="0" cy="-4.5" r="2" fill="rgba(210,170,155,0.55)"/>
+                <circle cx="4.3" cy="-2.2" r="2" fill="rgba(205,165,150,0.55)"/>
+                <circle cx="4.3" cy="2.2"  r="2" fill="rgba(200,158,142,0.50)"/>
+                <circle cx="0"   cy="4.5"  r="2" fill="rgba(210,168,152,0.50)"/>
+                <circle cx="-4.3" cy="2.2" r="2" fill="rgba(205,163,148,0.50)"/>
+                <circle cx="-4.3" cy="-2.2" r="2" fill="rgba(200,160,145,0.55)"/>
+                <circle cx="0" cy="0" r="1.2" fill="rgba(230,200,170,0.80)"/>
+              </g>
+
+              <!-- 꽃 2 (작게) -->
+              <g transform="translate(155, 198)">
+                <circle cx="0" cy="-3.5" r="1.5" fill="rgba(195,160,170,0.60)"/>
+                <circle cx="3.3" cy="-1.7" r="1.5" fill="rgba(195,160,170,0.55)"/>
+                <circle cx="3.3" cy="1.7"  r="1.5" fill="rgba(195,160,170,0.50)"/>
+                <circle cx="0"   cy="3.5"  r="1.5" fill="rgba(195,160,170,0.50)"/>
+                <circle cx="-3.3" cy="1.7" r="1.5" fill="rgba(195,160,170,0.55)"/>
+                <circle cx="-3.3" cy="-1.7" r="1.5" fill="rgba(195,160,170,0.60)"/>
+                <circle cx="0" cy="0" r="1" fill="rgba(225,195,165,0.80)"/>
+              </g>
+
+              <!-- 풀잎 1 -->
+              <path d="M245 240 Q242 220 248 205 Q252 195 255 205 Q257 218 252 240"
+                    fill="rgba(130,168,105,0.40)"
+                    stroke="rgba(122,160,98,0.30)" stroke-width="0.4"/>
+              <!-- 풀잎 2 -->
+              <path d="M260 240 Q265 218 270 208 Q273 200 276 210 Q276 225 270 240"
+                    fill="rgba(145,180,118,0.35)"
+                    stroke="rgba(136,172,110,0.28)" stroke-width="0.4"/>
+              <!-- 풀잎 3 -->
+              <path d="M232 240 Q228 222 232 212 Q235 204 237 212 Q238 226 234 240"
+                    fill="rgba(120,158,95,0.35)"
+                    stroke="rgba(112,150,88,0.25)" stroke-width="0.3"/>
+
+              <!-- 미세 씨앗 점 -->
+              <circle cx="175" cy="175" r="0.9" fill="rgba(185,148,125,0.65)"/>
+              <circle cx="220" cy="168" r="0.7" fill="rgba(155,192,130,0.60)"/>
+              <circle cx="140" cy="185" r="0.8" fill="rgba(175,148,128,0.55)"/>
+              <circle cx="290" cy="178" r="0.7" fill="rgba(155,192,130,0.50)"/>
+              <circle cx="105" cy="172" r="0.6" fill="rgba(185,150,130,0.50)"/>
+            </g>
+
+            <!-- ══ 붓자국 — 아티스트 서명 ══ -->
+            <g opacity="0.18" mask="url(#mk-bl)">
+              <path d="M18 215 Q35 208 52 215 Q65 220 58 228 Q48 234 30 230 Q15 226 18 215 Z"
+                    fill="rgba(155,192,130,0.35)"
+                    stroke="rgba(145,182,120,0.40)" stroke-width="0.5"/>
+              <path d="M25 195 Q38 190 50 196 Q58 200 54 207 Q46 212 32 208 Q22 204 25 195 Z"
+                    fill="rgba(185,145,125,0.28)"
+                    stroke="rgba(175,136,116,0.35)" stroke-width="0.4"/>
+              <path d="M10 178 Q22 174 33 179 Q40 183 37 189 Q30 193 18 190 Q8 186 10 178 Z"
+                    fill="rgba(160,175,140,0.22)"
+                    stroke="rgba(150,165,130,0.30)" stroke-width="0.4"/>
+            </g>
+          </svg>
+        </div>
+
+        <!-- ── 꽃잎 낙하 파티클 컨테이너 ── -->
+        <div id="petalContainer" style="
+          position:absolute; inset:0; z-index:7;
+          pointer-events:none; overflow:hidden; border-radius:16px;
+        "></div>
+
+        <!-- ISFP 레터 태그 -->
+        <div class="letter-tag">
+          <div class="letter-item">
+            <span class="letter-char">I</span>
+            <span class="letter-word">Intro</span>
+          </div>
+          <div class="letter-sep"></div>
+          <div class="letter-item">
+            <span class="letter-char">S</span>
+            <span class="letter-word">Sensing</span>
+          </div>
+          <div class="letter-sep"></div>
+          <div class="letter-item">
+            <span class="letter-char">F</span>
+            <span class="letter-word">Feeling</span>
+          </div>
+          <div class="letter-sep"></div>
+          <div class="letter-item">
+            <span class="letter-char">P</span>
+            <span class="letter-word">Perceiv</span>
+          </div>
+        </div>
+
+        <!-- hover 의미 오버레이 -->
+        <div class="card-meanings">
+          <div class="meanings-row">
+            <div class="meaning-item">
+              <span class="meaning-glyph">🌿</span>
+              <span class="meaning-label">Introvert</span>
+            </div>
+            <div class="meaning-sep"></div>
+            <div class="meaning-item">
+              <span class="meaning-glyph">👁</span>
+              <span class="meaning-label">Sensing</span>
+            </div>
+            <div class="meaning-sep"></div>
+            <div class="meaning-item">
+              <span class="meaning-glyph">🌸</span>
+              <span class="meaning-label">Feeling</span>
+            </div>
+            <div class="meaning-sep"></div>
+            <div class="meaning-item">
+              <span class="meaning-glyph">🍃</span>
+              <span class="meaning-label">Perceiving</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-vline"></div>
+        <div class="card-hline"></div>
+
+        <!-- 카드 컨텐츠 -->
+        <div class="card-content">
+
+          <div class="card-name">
+            <div class="name-main">
+              isfp<span class="name-dot">.</span>kr
+            </div>
+            <div class="name-sub">the adventurer · the artist</div>
+          </div>
+
+          <div style="opacity:0; pointer-events:none; width:44px; height:44px;"></div>
+
+          <div class="card-meta">
+            <div class="meta-row">
+              <div class="meta-dot"></div>
+              <span class="meta-text"><em>I</em> — Introverted · Still &amp; Present</span>
+            </div>
+            <div class="meta-row">
+              <div class="meta-dot"></div>
+              <span class="meta-text"><em>S</em> — Sensing · Beauty in Detail</span>
+            </div>
+            <div class="meta-row">
+              <div class="meta-dot"></div>
+              <span class="meta-text"><em>FP</em> — Feeling &amp; Perceiving · Flow</span>
+            </div>
+          </div>
+
+          <div class="card-domain">
+            <div class="domain-url">
+              isfp<span class="domain-tld">.kr</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <!-- /card -->
+
+    </div>
+  </div>
+
+  <script>
+    /* ── 3D Tilt ── */
+    const wrap = document.getElementById('cardWrap');
+    const holo = document.getElementById('cardHolo');
+    const spot = document.getElementById('cardSpot');
+
+    let tX = 0, tY = 0, cX = 0, cY = 0;
+    let hovering = false;
+    const lerp = (a, b, t) => a + (b - a) * t;
+
+    (function loop() {
+      cX = lerp(cX, tX, 0.09);
+      cY = lerp(cY, tY, 0.09);
+      wrap.style.transform = hovering
+        ? `rotateX(${cX}deg) rotateY(${cY}deg) scale(1.036)`
+        : `rotateX(${cX}deg) rotateY(${cY}deg)`;
+      requestAnimationFrame(loop);
+    })();
+
+    wrap.addEventListener('mouseenter', () => {
+      hovering = true;
+      wrap.classList.remove('is-idle');
+      wrap.style.animation = 'none';
+      wrap.style.boxShadow = `
+        0 40px 80px rgba(5,10,5,0.70),
+        0  0  60px rgba(110,155,85,0.14),
+        0  0 100px rgba(90,135,70,0.08)
+      `;
+    });
+
+    wrap.addEventListener('mouseleave', () => {
+      hovering = false;
+      tX = 0; tY = 0;
+      wrap.style.boxShadow = '';
+      holo.style.removeProperty('--mx');
+      holo.style.removeProperty('--my');
+      holo.style.removeProperty('--r');
+      spot.style.removeProperty('--mx');
+      spot.style.removeProperty('--my');
+    });
+
+    wrap.addEventListener('mousemove', (e) => {
+      const r  = wrap.getBoundingClientRect();
+      const nx = (e.clientX - r.left  - r.width  / 2) / (r.width  / 2);
+      const ny = (e.clientY - r.top   - r.height / 2) / (r.height / 2);
+
+      tY =  nx * 15;
+      tX = -ny * 11;
+
+      const px    = ((e.clientX - r.left) / r.width  * 100).toFixed(1) + '%';
+      const py    = ((e.clientY - r.top)  / r.height * 100).toFixed(1) + '%';
+      const angle = (Math.atan2(ny, nx) * 180 / Math.PI + 90).toFixed(1) + 'deg';
+
+      holo.style.setProperty('--mx', px);
+      holo.style.setProperty('--my', py);
+      holo.style.setProperty('--r',  angle);
+      spot.style.setProperty('--mx', px);
+      spot.style.setProperty('--my', py);
+    });
+
+    /* ── 꽃잎 낙하 파티클 ── */
+    const container = document.getElementById('petalContainer');
+
+    /*
+      ISFP: 꽃잎이 부드럽게 떨어지고 흔들림
+      각 꽃잎은 SVG 타원 — 세이지·로즈·테라코타·더스트핑크
+    */
+    const PETALS = [
+      { x:'18%', color:'rgba(200,158,148,0.72)', w:5, h:3.5, dur:5.5, delay:0,    dx:'18px',  dr:'200deg' },
+      { x:'32%', color:'rgba(155,192,130,0.65)', w:4, h:2.8, dur:6.8, delay:1.2,  dx:'-14px', dr:'160deg' },
+      { x:'47%', color:'rgba(185,148,128,0.68)', w:5, h:3,   dur:5.8, delay:2.5,  dx:'22px',  dr:'240deg' },
+      { x:'60%', color:'rgba(175,205,155,0.60)', w:3.5,h:2.5,dur:7.2, delay:0.6,  dx:'-18px', dr:'180deg' },
+      { x:'73%', color:'rgba(205,165,150,0.65)', w:4.5,h:3,  dur:6.0, delay:3.2,  dx:'15px',  dr:'220deg' },
+      { x:'25%', color:'rgba(165,195,145,0.58)', w:3, h:2,   dur:7.8, delay:1.8,  dx:'-10px', dr:'190deg' },
+      { x:'55%', color:'rgba(195,155,140,0.62)', w:4, h:2.8, dur:5.2, delay:4.0,  dx:'20px',  dr:'150deg' },
+      { x:'82%', color:'rgba(160,185,138,0.55)', w:3.5,h:2.2,dur:6.5, delay:2.0,  dx:'-16px', dr:'210deg' },
+    ];
+
+    PETALS.forEach(p => {
+      /* SVG 꽃잎 타원 */
+      const ns  = 'http://www.w3.org/2000/svg';
+      const svg = document.createElementNS(ns, 'svg');
+      svg.setAttribute('width',  p.w * 2);
+      svg.setAttribute('height', p.h * 2);
+      svg.setAttribute('viewBox', `0 0 ${p.w * 2} ${p.h * 2}`);
+      svg.style.overflow = 'visible';
+
+      const el = document.createElementNS(ns, 'ellipse');
+      el.setAttribute('cx', p.w);
+      el.setAttribute('cy', p.h);
+      el.setAttribute('rx', p.w);
+      el.setAttribute('ry', p.h);
+      el.setAttribute('fill', p.color);
+      svg.appendChild(el);
+
+      const wrap2 = document.createElement('div');
+      wrap2.className = 'petal';
+      wrap2.style.cssText = `
+        left: ${p.x};
+        width:  ${p.w * 2}px;
+        height: ${p.h * 2}px;
+        --dx: ${p.dx};
+        --dr: ${p.dr};
+        animation-duration:  ${p.dur}s;
+        animation-delay: ${p.delay}s;
+      `;
+      wrap2.appendChild(svg);
+      container.appendChild(wrap2);
+    });
+  </script>
+
+</body>
+</html>
